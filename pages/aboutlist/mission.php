@@ -22,7 +22,7 @@
         <div class="container-fluid navbar-inner">
             <img height="73" id="logo" src="assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
             <a class="navbar-brand text-white fs-3" href="home">
-                Marie-Bernarde College
+                Marie-Bernarde College Library
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,12 +31,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link text-white active" aria-current="page" href="home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="admissions">Admissions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="programs">Programs</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,7 +47,12 @@
                         <a class="nav-link text-white" href="contact">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class=" enroll-btn" href="">Enroll now</a>
+                        <a class=" enroll-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </a>
                     </li>
                 </ul>
             </div>

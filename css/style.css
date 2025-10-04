@@ -215,6 +215,16 @@
     z-index: 2;
 }
 
+::placeholder {
+    color: #888888b5 !important;    
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #888888b5 !important;
+    opacity: 1;
+}
+
 
 
 

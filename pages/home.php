@@ -32,8 +32,19 @@
                     <li class="nav-item">
                         <a class="nav-link text-white active" aria-current="page" href="home">Home</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            About
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?url=aboutlist/history">History</a></li>
+                            <li><a class="dropdown-item" href="?url=aboutlist/mission">Mission & Vision</a></li>
+                            <li><a class="dropdown-item" href="?url=aboutlist/goals">Goals & Objectives</a></li>
+                            <li><a class="dropdown-item" href="?url=aboutlist/values">Core Values</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="contact">About</a>
+                        <a class="nav-link text-white" href="contact">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class=" enroll-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
@@ -72,8 +83,8 @@
                                 <i class="fa-solid fa-lock"></i>
                             </span>
                             <input type="password" class="form-control ps-5" id="loginPassword" placeholder="Password" required>
-                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword()">
-                                <i id="togglePasswordIcon" class="fa-regular fa-eye"></i>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('loginPassword', 'togglePasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
                             </span>
                         </div>
                         <div class="mb-2">
@@ -114,10 +125,16 @@
                             <input type="email" class="form-control" placeholder="Email address" required>
                         </div>
                         <div class="mb-3 position-relative">
-                            <input type="password" class="form-control" placeholder="Password" required>
+                            <input type="password" class="form-control" id="registerPassword" placeholder="Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerPassword', 'registerPasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
+                            </span>
                         </div>
                         <div class="mb-3 position-relative">
-                            <input type="password" class="form-control" placeholder="Confirm Password" required>
+                            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerConfirmPassword', 'registerConfirmPasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
+                            </span>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Register</button>
                     </div>
