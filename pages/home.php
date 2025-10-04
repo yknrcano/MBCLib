@@ -50,38 +50,100 @@
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <form>
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">User Login</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">User Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-logo">
+                            <img src="assets/MBC-Logo.png" alt="Logo" height="200">
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <span class="input-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+                            <input type="email" class="form-control ps-5" id="loginEmail" placeholder="Email address" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <span class="input-icon">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control ps-5" id="loginPassword" placeholder="Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword()">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <div class="btn-row">
+                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Register</a>
+                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#forgotModal" data-bs-dismiss="modal">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-                <div class="modal-logo">
-                    <img src="assets/MBC-Logo.png" alt="Logo" height="100">
-                </div>
-                <div class="mb-3">
-                <label for="loginEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="loginEmail" required>
-                </div>
-                <div class="mb-3">
-                <label for="loginPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword" required>
-                </div>
-                <div class="mb-2">
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                    <a href="register.php">Register</a>
-                    <a href="forgot-password.php">Forgot Password?</a>
-                </div>
-
-
-            </div>
-            
-            
-        </form>
         </div>
     </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 position-relative">
+                            <input type="text" class="form-control" placeholder="ID Number" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" class="form-control" placeholder="First Name" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" class="form-control" placeholder="Last Name" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" class="form-control" placeholder="Contact Number" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="email" class="form-control" placeholder="Email address" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" placeholder="Password" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" placeholder="Confirm Password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                <h5 class="modal-title" id="forgotModalLabel">Forgot Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <div class="mb-3 position-relative">
+                    <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                    <input type="email" class="form-control ps-5" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
     
     <div class="bg-banner">
@@ -170,8 +232,6 @@
 
         </div>
     </div>
-
-
 
     <!-- Footer -->
     <div class="footer-top">

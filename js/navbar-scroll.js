@@ -11,27 +11,19 @@ window.addEventListener('DOMContentLoaded', function() {
   onScroll();
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-  const sections = document.querySelectorAll(".program-detail");
-  const navLinks = document.querySelectorAll(".side-link");
-
-  window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 250;
-      if (pageYOffset >= sectionTop) {
-        current = section.getAttribute("id");
-      }
-    });
-
-    navLinks.forEach(link => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === "#" + current) {
-        link.classList.add("active");
-      }
-    });
-  });
-});
+function togglePassword() {
+    const passwordInput = document.getElementById('loginPassword');
+    const icon = document.getElementById('togglePasswordIcon');
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = "password";
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
 
 window.addEventListener("load", function() {
     const preloader = document.getElementById("preloader");

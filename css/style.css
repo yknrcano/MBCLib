@@ -164,6 +164,73 @@
     width: 100%;
 }    
 
+/* Modal Styles */
+
+.modal-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.overlay-btn {
+    display: inline-block;
+    margin-top: 15px;
+    color: gray;
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.overlay-btn:hover {
+   color: rgb(0, 67, 237);
+   text-decoration: underline;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: #888;
+    z-index: 2;
+    font-size: 1.1rem;
+}
+
+.form-control.ps-5 {
+    padding-left: 2.5rem !important;
+}
+
+.password-toggle {
+    color: gray;
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* enroll-banner */
 
 .enroll-banner {
