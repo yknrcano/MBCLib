@@ -186,7 +186,7 @@
         </svg>
         <div class="school-details-content">
             <div class="school-details-content-txt">
-                <h2>Marie-Bernarde College</h2>
+                <h2>Marie-Bernarde College Library</h2>
                 <p>Established on September 20, 2002, Marie-Bernarde College Inc. (MBC) was founded by a visionary group of nursing educators, esteemed medical practitioners, and experts in business and education. From its inception, MBC has been dedicated to providing an exceptional, globally competitive healthcare education. The college's early years were marked by a dynamic start and a commitment to growth, beginning with the introduction of a comprehensive 6-month Caregiver Course. This course, expertly designed and programmed by trusted professionals, set the foundation for MBC's reputation for excellence in healthcare education.
                 </p>
             </div>
