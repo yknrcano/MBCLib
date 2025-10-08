@@ -120,7 +120,7 @@
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg-custom">
             <div class="modal-content">
-                <form action="../functions/auth.php" method="POST">
+                <form action="functions/auth.php" method="POST">
                     <div class="modal-header">
                         <h5 class="modal-title" id="registerModalLabel">Register</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

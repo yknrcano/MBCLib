@@ -26,11 +26,15 @@ if(isset($_POST['regis-btn'])){
 
     if(mysqli_num_rows($check_email_query_run) > 0){
         $_SESSION['message'] = "Email already registered";
-        header('Location: ../pages/home.php');
+        $_SESSION['modal_show'] = "registerModal";
+        header("Location: ../index.php?url=home");
+        exit();
     } 
     else if(!in_array($domain, $whitelist)){
         $_SESSION['message'] = "Invalid email please use you school email";
-        header('Location: ../pages/home.php');
+        $_SESSION['modal_show'] = "registerModal";
+        header("Location: ../index.php?url=home");
+        exit();
     }
     else{
 
@@ -152,7 +156,7 @@ else if(isset($_POST['login-btn'])){
             $_SESSION['message'] = "Invalid Account";
             $_SESSION['modal_show'] = "loginModal";
             header("Location: ../index.php?url=home");
-                exit();
+            exit();
         }
     }
     catch(Exception $e){
