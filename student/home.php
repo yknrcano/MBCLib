@@ -1,9 +1,26 @@
 <?php
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
     session_start();
+    include("../functions/dbcon.php");
     $modal_error = $_SESSION['modal_error'] ?? '';
     $modal_show = $_SESSION['modal_show'] ?? '';
     unset($_SESSION['modal_error'], $_SESSION['modal_show']);
+
+    $user_name = '';
+    if (isset($_SESSION['auth_user']['firstname'])) {
+        $user_name = trim($_SESSION['auth_user']['firstname']);
+    }
+    
+    if ($user_name === '') {
+        $user_name = 'Guest';
+    }
+    error_log('[home.php] SESSION=' . print_r($_SESSION, true) . ' user_name=' . $user_name);
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,22 +30,21 @@
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- css -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <title>Marie-Bernarde College</title>
 </head>
 <body>
-
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-content">
             <div class="spinner"></div>
-            <img src="assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
+            <img src="../assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
         </div>
     </div>
 
     <nav class="navbar sticky-top navbar-expand-xl navbar-home">
         <div class="container-fluid navbar-inner">
-            <img height="73" id="logo" src="assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
+            <img height="73" id="logo" src="../assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
             <a class="navbar-brand text-white fs-3" href="home">
                 Marie-Bernarde College Library
             </a>
@@ -55,7 +71,30 @@
                         <a class="nav-link text-white" href="contact">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class=" enroll-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                        <a class="nav-link text-white" href="#">
+                            <i class="fa-solid fa-book"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative" id="notif-bell">
+                        <a class="nav-link text-white" href="#" id="notifBellBtn">
+                            <i class="fa-solid fa-bell"></i>
+                        </a>
+                        <div class="notif-dropdown shadow" id="notifDropdownMenu">
+                            <div class="dropdown-item-text p-3">No new notifications</div>
+                            <!-- Adding more notif -->
+                        </div>
+                    </li>
+                    <li class="nav-item position-relative" id="user-menu">
+                        <a class="nav-link text-white" href="#" id="userMenuBtn">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <div class="user-dropdown shadow" id="userDropdownMenu">
+                            <i class="fa-regular fa-circle-user"><span class="ms-2"><?= htmlspecialchars($user_name) ?></span></i>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="../functions/logout.php">Logout</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">
@@ -67,119 +106,6 @@
         </div>
     </nav>
 
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <?php if (isset($_SESSION['message'])): ?>
-            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
-                <?= htmlspecialchars($_SESSION['message']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <?php unset($_SESSION['message']); ?>
-        <?php endif; ?>
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form action="functions/auth.php" method="POST">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel">User Login</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="modal-logo">
-                            <img src="assets/MBC-Logo.png" alt="Logo" height="200">
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <span class="input-icon">
-                                <i class="fa-solid fa-envelope"></i>
-                            </span>
-                            <input type="email" name="email" class="form-control ps-5" id="loginEmail" placeholder="Email address" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <span class="input-icon">
-                                <i class="fa-solid fa-lock"></i>
-                            </span>
-                            <input type="password" name="password" class="form-control ps-5" id="loginPassword" placeholder="Password" required>
-                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('loginPassword', 'togglePasswordIcon')">
-                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
-                            </span>
-                        </div>
-                        <div class="mb-2">
-                            <button type="submit" class="btn btn-primary w-100" name="login-btn">Login</button>
-                            <div class="btn-row">
-                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Register</a>
-                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#forgotModal" data-bs-dismiss="modal">Forgot Password?</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Registration Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
-            <div class="modal-content">
-                <form action="../functions/auth.php" method="POST">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="registerModalLabel">Register</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3 position-relative">
-                            <input type="text" name="id_number" class="form-control" placeholder="ID Number" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="text" name="firstname" class="form-control" placeholder="First Name" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="text" name="lastname" class="form-control" placeholder="Last Name" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="text" name="phone" class="form-control" placeholder="Contact Number" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="email" name="email" class="form-control" placeholder="Email address" required>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="password" name="password" class="form-control" id="registerPassword" placeholder="Password" required>
-                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerPassword', 'registerPasswordIcon')">
-                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
-                            </span>
-                        </div>
-                        <div class="mb-3 position-relative">
-                            <input type="password" class="form-control" name="Rpassword" id="registerConfirmPassword" placeholder="Confirm Password" required>
-                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerConfirmPassword', 'registerConfirmPasswordIcon')">
-                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
-                            </span>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100" name="regis-btn">Register</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
-            <div class="modal-content">
-            <form>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="forgotModalLabel">Forgot Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3 position-relative">
-                        <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" class="form-control ps-5" placeholder="Enter your email" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
-                </div>
-            </form>
-            </div>
-        </div>
-    </div>
     
     <div class="bg-banner">
         <div class="header">
@@ -208,7 +134,6 @@
                 <p>Established on September 20, 2002, Marie-Bernarde College Inc. (MBC) was founded by a visionary group of nursing educators, esteemed medical practitioners, and experts in business and education. From its inception, MBC has been dedicated to providing an exceptional, globally competitive healthcare education. The college's early years were marked by a dynamic start and a commitment to growth, beginning with the introduction of a comprehensive 6-month Caregiver Course. This course, expertly designed and programmed by trusted professionals, set the foundation for MBC's reputation for excellence in healthcare education.
                 </p>
             </div>
-            <img src="assets/bgmidwife.jpg" alt="" height="350">
         </div>  
     </div>
 
@@ -270,7 +195,7 @@
 
     <!-- Footer -->
     <div class="footer-top">
-      <h2><img id="logo-footer" src="assets/MBC-Logo.png" alt="Logo" height="70">
+      <h2><img id="logo-footer" src="../assets/MBC-Logo.png" alt="Logo" height="70">
         Marie-Bernarde College</h2>
     </div>
     <footer class="footer">
@@ -304,15 +229,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/374eee3e25.js" crossorigin="anonymous"></script>
-    <script src="js/navbar-scroll.js"></script>
+    <script src="../js/navbar-scroll.js"></script>
 
 
     <?php if ($modal_show): ?>
         <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var modal = new bootstrap.Modal(document.getElementById('<?= $modal_show ?>'));
-            modal.show();
-        });
+            document.addEventListener("DOMContentLoaded", function() {
+                var modal = new bootstrap.Modal(document.getElementById('<?= $modal_show ?>'));
+                modal.show();
+            });
         </script>
     <?php endif; ?>
 </body>

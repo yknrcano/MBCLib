@@ -32,3 +32,35 @@ window.addEventListener("load", function() {
         preloader.style.display = "none";
     }, 400);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bellBtn = document.getElementById('notifBellBtn');
+    const dropdown = document.getElementById('notifDropdownMenu');
+
+    bellBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('notif-bell').contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const userBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdownMenu');
+
+    userBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        userDropdown.style.display = (userDropdown.style.display === 'none' || userDropdown.style.display === '') ? 'block' : 'none';
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('user-menu').contains(e.target)) {
+            userDropdown.style.display = 'none';
+        }
+    });
+});

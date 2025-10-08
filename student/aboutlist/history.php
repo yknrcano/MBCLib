@@ -22,7 +22,7 @@
         <div class="container-fluid navbar-inner">
             <img height="73" id="logo" src="assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
             <a class="navbar-brand text-white fs-3" href="home">
-                Marie-Bernarde College
+                Marie-Bernarde College Library
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -31,12 +31,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link text-white active" aria-current="page" href="home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="admissions">Admissions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="programs">Programs</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,7 +47,12 @@
                         <a class="nav-link text-white" href="contact">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class=" enroll-btn" href="">Enroll now</a>
+                        <a class=" enroll-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -61,48 +60,27 @@
     </nav>
 
     <div class="admission-banner">
-        <h1>Programs</h1>
+        <h1>History</h1>
         <img src="assets/bg3-small.png" alt="background">
     </div>
 
     <div class="mini-nav">
         <i class="fa-solid fa-house"></i>
         <a href="home">Home</a> /
-        <h3>Programs</h3>
+        <h3>About</h3> /
+        <h3>History</h3>
     </div>
 
-    <div class="program-list-grid">
-        <a href="?url=nursing" class="program-card nursing">
-            <h2>Nursing</h2>
-            <i class="fa-solid fa-stethoscope"></i>
-            <p>Our nursing program is designed to equip students with the necessary skills and knowledge to excel in the healthcare field.</p>
-        </a>
-        <a href="?url=midwifery" class="program-card midwifery">
-            <h2>Midwifery</h2>
-            <i class="fa-solid fa-person-pregnant"></i>
-            <p>Our midwifery program trains students to provide comprehensive care to childbearing women and their families.</p>
-        </a>
-        <a href="?url=business" class="program-card business-ad">
-            <h2>Business Administration</h2>
-            <i class="fa-solid fa-building"></i>
-            <p>Our business administration program provides students with a strong foundation in business principles and practices.</p>
-        </a>
-        <a href="?url=let" class="program-card let-program">
-            <h2>LET Program</h2>
-            <i class="fa-solid fa-award"></i>
-            <p>Our Licensure Examination for Teachers (LET) program is designed to prepare aspiring educators for the challenges of the teaching profession.</p>
-        </a>
-        <a href="?url=seduc" class="program-card secondary-educ">
-            <h2>Secondary Education</h2>
-            <i class="fa-solid fa-book"></i>
-            <p>Our secondary education program prepares students to become effective educators in middle and high school settings.</p>
-        </a>
-        <a href="admissions" class="program-card enroll-now">
-            <h2>Enroll Now!</h2>
-            <i class="fa-solid fa-arrow-right"></i>
-        </a>
+    <div class="about-section">
+        <div class="about-title">
+            <h2>Our Humble beginning</h2>
+        </div>
+        <div class="about-content">
+            <p>Established on September 20, 2002, Marie-Bernarde College Inc. (MBC) was founded by a visionary group of nursing educators, esteemed medical practitioners, and experts in business and education. From its inception, MBC has been dedicated to providing an exceptional, globally competitive healthcare education. The college’s early years were marked by a dynamic start and a commitment to growth, beginning with the introduction of a comprehensive 6-month Caregiver Course. This course, expertly designed and programmed by trusted professionals, set the foundation for MBC’s reputation for excellence in healthcare education.</p>
+            <p>Building on this strong foundation, MBC expanded its offerings to include a range of TESDA-registered and accredited courses, delivered on a trimester basis over two years. These courses encompass Basic Nursing Assistant, Business Management and Information Technology, Business Computing and Accountancy, Health Care Information System, and Computer and Network Design. Each program is meticulously crafted to meet industry standards and prepare students for the demands of their chosen fields. MBC’s commitment to innovation and relevance in its curriculum ensures that graduates are well-equipped to thrive in a competitive global market.</p>
+            <p>Today, Marie-Bernarde College Inc. proudly offers a diverse array of degree programs, including Bachelor of Science in Nursing, Bachelor of Business Administration with majors in Human Resource Management and Marketing Management, Bachelor of Secondary Education with majors in English, Science, and Mathematics, and a Diploma in Midwifery. Our goal is to produce highly skilled and globally competitive professionals who exceed industry standards. Committed to excellence, MBC is dedicated to expanding our offerings in health and sciences, ensuring our students receive the best education and training available. By continually evolving and adapting to the needs of the healthcare and business sectors, MBC remains at the forefront of educational excellence.</p>
+        </div>
     </div>
-
 
     <!-- Footer -->
     <div class="footer-top">
