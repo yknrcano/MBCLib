@@ -118,6 +118,13 @@
 
     <!-- Registration Modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+                <?= htmlspecialchars($_SESSION['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
         <div class="modal-dialog modal-dialog-centered modal-lg-custom">
             <div class="modal-content">
                 <form action="functions/auth.php" method="POST">

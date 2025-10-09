@@ -111,11 +111,6 @@
       </div>
     </div>
 
-
-
-
-
-
     <!-- Footer -->
     <div class="footer-top">
       <h2><img id="logo-footer" src="assets/MBC-Logo.png" alt="Logo" height="70">

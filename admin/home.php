@@ -21,7 +21,81 @@
     <div id="preloader">
         <div class="preloader-content">
             <div class="spinner"></div>
-            <img src="assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
+            <img src="../assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
+        </div>
+    </div>
+
+
+    <div class="sidebar-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <header>
+                <a href="#"> <img src="../assets/MBC-Logo.png" height="45" alt=""> Library Admin</a>
+            </header>
+            <ul class="nav">
+                <li>
+                    <a href="#">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Shortcuts 
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Events
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        About
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Services
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-bottom">
+                <form action="../functions/logout.php" method="post">
+                    <button type="submit" class="btn btn-warning w-100">Logout</button>
+                </form>
+            </div>
+        </div>
+        <!-- Content -->
+        <div class="content">
+            <div class="dashboard-grid">
+                <div class="dashboard-analytics">
+                    <!-- Replace with your analytics graph/chart -->
+                    <h4>Book Borrowing Analytics</h4>
+                    <canvas id="analyticsChart" height="100"></canvas>
+                </div>
+                <div class="dashboard-box total-borrowed">
+                    <h5>Total Borrowed Books</h5>
+                    <span id="totalBorrowed">0</span>
+                </div>
+                <div class="dashboard-box overdue-books">
+                    <h5>Overdue Borrowed Books</h5>
+                    <span id="overdueBooks">0</span>
+                </div>
+                <div class="dashboard-box total-books">
+                    <h5>Total Books</h5>
+                    <span id="totalBooks">0</span>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -19,7 +19,7 @@ if(isset($_POST['regis-btn'])){
     $code = mysqli_real_escape_string($con, md5($_POST['email'].rand(10,9999)));
    
     $domain = substr(strrchr($email, "@" ), 1 );
-    $whitelist = array('mbc.edu.ph', 'student.mbc.edu.ph');
+    $whitelist = array('mbc.edu.ph', 'admin.mbc.edu.ph', 'gmail.com');
 
     $check_email_query = "SELECT email FROM users WHERE email='$email' ";
     $check_email_query_run = mysqli_query($con, $check_email_query);
@@ -54,9 +54,9 @@ if(isset($_POST['regis-btn'])){
 					";
 
             // phpmailer
-                require '../../phpmailer/src/Exception.php';
-                require '../../phpmailer/src/SMTP.php';
-                require '../../phpmailer/src/PHPMailer.php';
+                require '../phpmailer/src/Exception.php';
+                require '../phpmailer/src/SMTP.php';
+                require '../phpmailer/src/PHPMailer.php';
 
                 $mail = new PHPMailer(true);                             
                 try {
@@ -92,21 +92,29 @@ if(isset($_POST['regis-btn'])){
 
                     if($insert_query_run){
                         $_SESSION['message'] = "Register Successfully, check your email for account activation.";
-                        header('Location: ../pages/home.php');
+                        $_SESSION['modal_show'] = "registerModal";
+                        header("Location: ../index.php?url=home");
+                        exit();
                     }
                     else{
                         $_SESSION['message'] = "Something went wrong";
-                        header('Location: ../pages/home.php');
+                        $_SESSION['modal_show'] = "registerModal";
+                        header("Location: ../index.php?url=home");
+                        exit();
                     }
                 } 
                 catch (Exception $e) {
                     $_SESSION['message'] = "Message could not be sent. Mailer Error: ".$mail->ErrorInfo;
-                    header('location: ../pages/home.php');
+                   $_SESSION['modal_show'] = "registerModal";
+                    header("Location: ../index.php?url=home");
+                    exit();
                 }
             }
             else{
             $_SESSION['message'] = "Password do not match";
-            header('Location: ../pages/home.php');
+            $_SESSION['modal_show'] = "registerModal";
+            header("Location: ../index.php?url=home");
+            exit();
         }
     }
 }
