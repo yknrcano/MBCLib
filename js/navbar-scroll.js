@@ -64,3 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    var toggle = document.getElementById('libraryToggle');
+    var parent = toggle.closest('.has-submenu');
+    toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        parent.classList.toggle('open');
+    });
+});

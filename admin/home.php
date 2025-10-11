@@ -30,7 +30,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <header>
-                <a href="#"> <img src="../assets/MBC-Logo.png" height="45" alt=""> Library Admin</a>
+                <a href="#"><img src="../assets/MBC-Logo.png" height="42" alt=""> <span>Library Admin</span></a>
             </header>
             <ul class="nav">
                 <li>
@@ -38,40 +38,25 @@
                         Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        Shortcuts 
+                <li class="has-submenu">
+                    <a href="#" id="libraryToggle">
+                        Library System
                     </a>
+                    <ul class="sidebar-submenu" id="librarySubmenu">
+                        <li><a href="#">Transaction</a></li>
+                        <li><a href="#">Borrowed</a></li>
+                        <li><a href="#">Manage Books</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#">
-                        Overview
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Events
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        About
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Services
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        Contact
+                        User Management
                     </a>
                 </li>
             </ul>
             <div class="sidebar-bottom">
                 <form action="../functions/logout.php" method="post">
-                    <button type="submit" class="btn btn-warning w-100">Logout</button>
+                    <button type="submit" class="sidebar-btn w-100">Logout</button>
                 </form>
             </div>
         </div>
@@ -79,7 +64,6 @@
         <div class="content">
             <div class="dashboard-grid">
                 <div class="dashboard-analytics">
-                    <!-- Replace with your analytics graph/chart -->
                     <h4>Book Borrowing Analytics</h4>
                     <canvas id="analyticsChart" height="100"></canvas>
                 </div>

@@ -527,7 +527,8 @@ footer {
     --program-list-width: min(
         80vw,
         1500px
-    ); /* note - it will "break" if it gets too wide and there aren't enough items */
+    ); 
+    /* note - it will "break" if it gets too wide and there aren't enough items */
     --program-list-item-width: 300px;
     --program-list-item-height: 250px;
     --program-list-item-gap: 3rem;
@@ -643,122 +644,6 @@ footer {
             )
         );
     }
-}
-
-/* mission & vision */
-.vis-mis {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-    align-items: stretch;
-    background: #f7f9fc;
-    padding: 40px 10%;
-}
-
-.mission-vision-box {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(22, 67, 126, 0.08);
-    flex: 1 1 350px;
-    max-width: 500px;
-    min-width: 300px;
-    padding: 2.5rem 2rem 2rem 2rem;
-    margin: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: box-shadow 0.2s;
-}
-
-.mission-vision-box:hover {
-    box-shadow: 0 8px 32px rgba(22, 67, 126, 0.16);
-}
-
-.mv-icon {
-    font-size: 2.8rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    background: #f5ec43;
-    border-radius: 50%;
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(22, 67, 126, 0.08);
-}
-
-.vision-icon {
-    background: #f5ec43;
-}
-
-.mission-icon {
-    background: #16437e22;
-    color: #16437E;
-}
-
-.mission-vision-box h2 {
-    font-size: 2rem;
-    color: #16437E;
-    margin-bottom: 1rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    text-align: center;
-}
-
-.mission-vision-box p {
-    color: #444;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    text-align: center;
-}
-
-/* accreditations & affiliations */
-
-.accreditations {
-    background: #f7f9fc;
-    padding: 40px 10% 30px 10%;
-    border-radius: 18px;
-    margin: 40px auto 0 auto;
-    box-shadow: 0 4px 24px rgba(22, 67, 126, 0.08);
-    text-align: center;
-}
-
-.accreditations h1 {
-    color: #16437E;
-    font-size: 2rem;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    letter-spacing: 1px;
-}
-
-.logo-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 2rem;
-    justify-items: center;
-    align-items: center;
-    padding: 20px 0;
-}
-
-.logo-list img {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(22, 67, 126, 0.10);
-    padding: 16px 20px;
-    min-width: 120px;
-    height: 300px;
-    object-fit: contain;
-    transition: transform 0.2s, box-shadow 0.2s;
-    filter: grayscale(20%);
-}
-
-.logo-list img:hover {
-    transform: scale(1.07);
-    box-shadow: 0 8px 32px rgba(22, 67, 126, 0.18);
-    filter: grayscale(0%);
 }
 
 /* admission */
@@ -1298,27 +1183,23 @@ footer {
     left: 0;
     width: 250px;
     height: 100vh;
-    background: #37474F;
+    background: var(--primary-color);
     z-index: 1000;
     overflow-y: auto;
     transition: all 0.5s ease;
 }
 
 .sidebar header {
-  background-color: #263238;
-  font-size: 20px;
-  line-height: 52px;
-  text-align: center;
+    background-color: #133a6d;
+    font-size: 21px;
+    line-height: 62px;
+    text-align: center;
+    box-shadow: 0 4px 12px -2px rgba(22, 67, 126, 0.58);
 }
 
 .sidebar header a {
-  color: #fff;
-  display: block;
-  text-decoration: none;
-}
-
-.sidebar header a:hover {
-  color: #fff;
+    color: #fff;
+    text-decoration: none;
 }
 
 .sidebar .nav{
@@ -1337,17 +1218,18 @@ footer {
     display: block;
     width: 100%;
     background: none;
-    border-bottom: 1px solid #455A64;
-    color: #CFD8DC;
-    font-size: 14px;
+    border-bottom: 1px solid #e2e2e248;
+    color: #ffffff;
+    font-family: 'poppins', serif;
+    font-size: 16px;
     padding: 16px 24px;
     text-decoration: none;
     transition: background 0.2s, color 0.2s;
 }
 
 .sidebar .nav a:hover{
-  background: none;
-  color: #ECEFF1;
+    background-color: #11235A;
+    color: #ECEFF1;
 }
 
 .sidebar .nav a i{
@@ -1357,6 +1239,88 @@ footer {
 .sidebar-bottom {
     margin-top: auto;
     padding: 24px;
+}
+
+.sidebar-btn {
+    width: 100%;
+    padding: 10px;
+    background: #f5ec43;
+    color: #16437E;
+    border: none;
+    border-radius: 6px;
+    font-family: 'poppins', serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-btn:hover {
+    background: #e0e033;
+    color: #11235A;
+}
+
+.has-submenu.open > a,
+.has-submenu.open > a:focus {
+    background-color: #11235A;
+    color: #ECEFF1;
+}
+
+.sidebar-submenu {
+    list-style: none;
+    padding-left: 20px;
+    margin: 0;
+    display: none;
+    flex-direction: column;
+    background: #173b7a;
+    border-left: 4px solid #11235A;
+}
+
+.sidebar-submenu li {
+    width: 100%;
+}
+
+.sidebar-submenu li:not(:last-child) a {
+    border-bottom: 1px solid #23336a;
+}
+
+.sidebar-submenu a {
+    font-size: 15px !important;
+    display: block;
+    padding: 10px 24px 10px 36px;
+    color: #b0bec5;
+    background: none;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-submenu a.active,
+.sidebar-submenu a:hover {
+    position: relative;
+    color: #fff;
+    background: none !important;
+}
+
+.sidebar-submenu a.active::after,
+.sidebar-submenu a:hover::after {
+    content: '';
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.has-submenu.open > .sidebar-submenu {
+    display: flex;
+}
+
+.has-submenu.open > .nav-link .submenu-caret {
+    transform: rotate(180deg);
 }
 
 .content {
