@@ -4,7 +4,6 @@
 	use PHPMailer\PHPMailer\SMTP;
 
 session_start();
-
 include('../functions/dbcon.php');
 
 if(isset($_POST['regis-btn'])){ 
@@ -130,7 +129,7 @@ else if(isset($_POST['login-btn'])){
         if(mysqli_num_rows($login_query_run) > 0){
             $userdata = mysqli_fetch_assoc($login_query_run);
 
-            if($userdata['status'] != 1){
+            if($userdata['status'] == 1){
 
                 $_SESSION['auth'] = true;
                 $_SESSION['user_id'] = (int)$userdata['id'];

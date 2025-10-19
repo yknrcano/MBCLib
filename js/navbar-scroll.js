@@ -65,11 +65,92 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Admin submenu toggle
 document.addEventListener("DOMContentLoaded", function() {
     var toggle = document.getElementById('libraryToggle');
     var parent = toggle.closest('.has-submenu');
     toggle.addEventListener('click', function(e) {
         e.preventDefault();
         parent.classList.toggle('open');
+    });
+});
+
+// Edit user verification
+document.addEventListener('DOMContentLoaded', function() {
+    var editUserModal = document.getElementById('editUserModal');
+    editUserModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('editUserId').value = button.getAttribute('data-user-id');
+        document.getElementById('editUserName').textContent = button.getAttribute('data-user-name');
+        document.getElementById('editUserEmail').textContent = button.getAttribute('data-user-email');
+        var status = button.getAttribute('data-user-status');
+        document.getElementById('statusTrue').checked = (status === 'true' || status === '1');
+        document.getElementById('statusFalse').checked = (status === 'false' || status === '0');
+    });
+
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    deleteUserModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('deleteUserId').value = button.getAttribute('data-user-id');
+    });
+});
+
+// Auto-dismiss alert after 3 seconds
+document.addEventListener("DOMContentLoaded", function() {
+    var alertBox = document.getElementById('topAlert');
+    if (alertBox) {
+        setTimeout(function() {
+            var bsAlert = bootstrap.Alert.getOrCreateInstance(alertBox);
+            bsAlert.close();
+        }, 3000);
+    }
+});
+
+// Delete user confirmation
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('confirmDeleteCheckbox');
+    var deleteBtn = document.getElementById('deleteUserBtn');
+    if (checkbox && deleteBtn) {
+        checkbox.addEventListener('change', function() {
+            deleteBtn.disabled = !checkbox.checked;
+        });
+    }
+    
+    // reset
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    deleteUserModal.addEventListener('show.bs.modal', function () {
+        checkbox.checked = false;
+        deleteBtn.disabled = true;
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var editBookModal = document.getElementById('editBookModal');
+    editBookModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var isbn = button.getAttribute('data-isbn');
+        document.getElementById('modalIsbn').textContent = isbn;
+
+        // AJAX to fetch all book_ids for this ISBN
+        fetch('../functions/get_books_by_isbn.php?isbn=' + encodeURIComponent(isbn))
+            .then(response => response.json())
+            .then(data => {
+                var tbody = document.getElementById('editBookModalBody');
+                tbody.innerHTML = '';
+                data.forEach(function(book) {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${book.book_id}</td>
+                            <td>${book.borrowed ? 'True' : 'False'}</td>
+                            <td>
+                                <form method="post" action="../functions/delete_book.php" onsubmit="return confirm('Delete this book?');">
+                                    <input type="hidden" name="book_id" value="${book.book_id}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
     });
 });

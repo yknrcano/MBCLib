@@ -4,7 +4,7 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
     session_start();
-    include("../functions/dbcon.php");
+    require_once __DIR__ . '/../functions/dbcon.php';
     $modal_error = $_SESSION['modal_error'] ?? '';
     $modal_show = $_SESSION['modal_show'] ?? '';
     unset($_SESSION['modal_error'], $_SESSION['modal_show']);
@@ -61,10 +61,10 @@
                             About
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="?url=aboutlist/history">History</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/mission">Mission & Vision</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/goals">Goals & Objectives</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/values">Core Values</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/history">History</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/mission">Mission & Vision</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/goals">Goals & Objectives</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/values">Core Values</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

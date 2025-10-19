@@ -1,3 +1,25 @@
+<?php
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    session_start();
+    require_once __DIR__ . '/../../functions/dbcon.php';
+    $modal_error = $_SESSION['modal_error'] ?? '';
+    $modal_show = $_SESSION['modal_show'] ?? '';
+    unset($_SESSION['modal_error'], $_SESSION['modal_show']);
+
+    $user_name = '';
+    if (isset($_SESSION['auth_user']['firstname'])) {
+        $user_name = trim($_SESSION['auth_user']['firstname']);
+    }
+    
+    if ($user_name === '') {
+        $user_name = 'Guest';
+    }
+    error_log('[home.php] SESSION=' . print_r($_SESSION, true) . ' user_name=' . $user_name);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +28,7 @@
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!-- css -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
     <title>Marie-Bernarde College</title>
 </head>
 <body>
@@ -14,13 +36,13 @@
     <div id="preloader">
         <div class="preloader-content">
             <div class="spinner"></div>
-            <img src="assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
+            <img src="../../assets/MBC-Logo.png" alt="Logo" class="spinner-logo">
         </div>
     </div>
 
     <nav class="navbar sticky-top navbar-expand-xl navbar-all">
         <div class="container-fluid navbar-inner">
-            <img height="73" id="logo" src="assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
+            <img height="73" id="logo" src="../../assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
             <a class="navbar-brand text-white fs-3" href="home">
                 Marie-Bernarde College Library
             </a>
@@ -30,24 +52,47 @@
             <div class="collapse navbar-collapse " id="navItems">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-white active" aria-current="page" href="home">Home</a>
+                        <a class="nav-link text-white active" aria-current="page" href="/MBClib/student/home">Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             About
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="?url=aboutlist/history">History</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/mission">Mission & Vision</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/goals">Goals & Objectives</a></li>
-                            <li><a class="dropdown-item" href="?url=aboutlist/values">Core Values</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/history">History</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/mission">Mission & Vision</a></li>
+                            <li><a class="dropdown-item" href="#">Goals & Objectives</a></li>
+                            <li><a class="dropdown-item" href="/MBCLib/student/aboutlist/values">Core Values</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="contact">Contact Us</a>
+                        <a class="nav-link text-white" href="/MBClib/student/contact">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class=" enroll-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                        <a class="nav-link text-white" href="#">
+                            <i class="fa-solid fa-book"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative" id="notif-bell">
+                        <a class="nav-link text-white" href="#" id="notifBellBtn">
+                            <i class="fa-solid fa-bell"></i>
+                        </a>
+                        <div class="notif-dropdown shadow" id="notifDropdownMenu">
+                            <div class="dropdown-item-text p-3">No new notifications</div>
+                            <!-- Adding more notif -->
+                        </div>
+                    </li>
+                    <li class="nav-item position-relative" id="user-menu">
+                        <a class="nav-link text-white" href="#" id="userMenuBtn">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                        <div class="user-dropdown shadow" id="userDropdownMenu">
+                            <i class="fa-regular fa-circle-user"><span class="ms-2"><?= htmlspecialchars($user_name) ?></span></i>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="../../functions/logout.php">Logout</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">
@@ -61,7 +106,7 @@
 
     <div class="admission-banner">
         <h1>Goals & Objectives</h1>
-        <img src="assets/bg3-small.png" alt="background">
+        <img src="../../assets/bg3-small.png" alt="background">
     </div>
 
     <div class="mini-nav">
@@ -123,6 +168,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/374eee3e25.js" crossorigin="anonymous"></script>
-    <script src="js/navbar-scroll.js"></script>
+    <script src="../../js/navbar-scroll.js"></script>
 </body>
 </html>

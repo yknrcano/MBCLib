@@ -22,7 +22,7 @@ switch ($url) {
     case 'aboutlist/values':
         require 'pages/aboutlist/values.php';
         break;
-        
+
     case 'student/home':
         require 'student/home.php';
         break;
@@ -40,6 +40,22 @@ switch ($url) {
         break;
     case 'student/aboutlist/values':
         require 'student/aboutlist/values.php';
+        break;
+
+    case 'admin/home':
+        require 'admin/home.php';
+        break;
+    case 'admin/transaction':
+        require 'admin/transaction.php';
+        break;
+    case 'admin/borrowed':
+        require 'admin/borrowed.php';
+        break;
+    case 'admin/manage':
+        require 'admin/manage.php';
+        break;
+    case 'admin/user_management':
+        require 'admin/user_management.php';
         break;
     default:
         http_response_code(404);

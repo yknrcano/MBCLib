@@ -34,16 +34,16 @@
             </header>
             <ul class="nav">
                 <li>
-                    <a href="#">
+                    <a href="/MBClib/admin/home">
                         Dashboard
                     </a>
                 </li>
-                <li class="has-submenu">
+                <li class="has-submenu open">
                     <a href="#" id="libraryToggle">
                         Library System
                     </a>
                     <ul class="sidebar-submenu" id="librarySubmenu">
-                        <li><a href="/MBClib/admin/transaction">Transaction</a></li>
+                        <li><a href="#" class="active">Transaction</a></li>
                         <li><a href="/MBClib/admin/borrowed">Borrowed</a></li>
                         <li><a href="/MBClib/admin/manage">Manage Books</a></li>
                     </ul>
@@ -62,27 +62,7 @@
         </div>
         <!-- Content -->
         <div class="content">
-            <div class="dashboard-grid">
-                <div class="title-bar">
-                    <h2>Dashboard</h2>
-                </div>
-                <div class="dashboard-analytics">
-                    <h4>Book Borrowing Analytics</h4>
-                    <canvas id="analyticsChart" height="100"></canvas>
-                </div>
-                <div class="dashboard-box total-books">
-                    <h5>Total Books</h5>
-                    <span id="totalBooks">0</span>
-                </div>
-                <div class="dashboard-box total-borrowed">
-                    <h5>Total Borrowed Books</h5>
-                    <span id="totalBorrowed">0</span>
-                </div>
-                <div class="dashboard-box overdue-books">
-                    <h5>Overdue Borrowed Books</h5>
-                    <span id="overdueBooks">0</span>
-                </div>
-            </div>
+            
         </div>
     </div>
 
