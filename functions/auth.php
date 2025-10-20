@@ -23,12 +23,23 @@ if(isset($_POST['regis-btn'])){
     $check_email_query = "SELECT email FROM users WHERE email='$email' ";
     $check_email_query_run = mysqli_query($con, $check_email_query);
 
+    $check_phone_query = "SELECT phone FROM users WHERE phone='$phone' ";
+    $check_phone_query_run = mysqli_query($con, $check_phone_query);
+
     if(mysqli_num_rows($check_email_query_run) > 0){
         $_SESSION['message'] = "Email already registered";
         $_SESSION['modal_show'] = "registerModal";
         header("Location: ../index.php?url=home");
         exit();
     } 
+
+    else if(mysqli_num_rows($check_phone_query_run) > 0){
+        $_SESSION['message'] = "Phone number already registered";
+        $_SESSION['modal_show'] = "registerModal";
+        header("Location: ../index.php?url=home");
+        exit();
+    }
+
     else if(!in_array($domain, $whitelist)){
         $_SESSION['message'] = "Invalid email please use your school email";
         $_SESSION['modal_show'] = "registerModal";
@@ -39,7 +50,7 @@ if(isset($_POST['regis-btn'])){
 
         if($password == $Rpassword){
 
-            $insert_query = "INSERT INTO users (firstname, lastname, email, phone, password, ver_code) VALUES ('$firstname', '$lastname', '$email', '$phone', '$password', '$code')";
+            $insert_query = "INSERT INTO users (id_no, firstname, lastname, email, phone, password, ver_code) VALUES ('$idnumber', '$firstname', '$lastname', '$email', '$phone', '$password', '$code')";
             $insert_query_run = mysqli_query($con, $insert_query);
             $userid = mysqli_insert_id($con);
 

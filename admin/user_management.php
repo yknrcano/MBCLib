@@ -246,7 +246,7 @@
         <!-- Delete User Modal -->
         <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
           <div class="modal-dialog">
-            <form id="deleteUserForm" method="post" action="delete_user.php">
+            <form id="deleteUserForm" method="post" action="../functions/delete_user.php">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
