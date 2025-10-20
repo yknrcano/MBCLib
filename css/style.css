@@ -1603,3 +1603,10 @@ input[type=number] {
 input[type=number]::-ms-input-spinner {
     display: none;
 }
+
+.transaction-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(22, 67, 126, 0.08);
+    padding: 30px 40px;
+}

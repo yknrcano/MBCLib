@@ -3,6 +3,9 @@
     $modal_error = $_SESSION['modal_error'] ?? '';
     $modal_show = $_SESSION['modal_show'] ?? '';
     unset($_SESSION['modal_error'], $_SESSION['modal_show']);
+
+    $alert = $_SESSION['alert'] ?? '';
+    unset($_SESSION['alert']);
 ?>
 
 <!DOCTYPE html>
@@ -34,16 +37,16 @@
             </header>
             <ul class="nav">
                 <li>
-                    <a href="/MBClib/admin/home">
+                    <a href="#">
                         Dashboard
                     </a>
                 </li>
-                <li class="has-submenu open">
+                <li class="has-submenu">
                     <a href="#" id="libraryToggle">
                         Library System
                     </a>
                     <ul class="sidebar-submenu" id="librarySubmenu">
-                        <li><a href="#" class="active">Transaction</a></li>
+                        <li><a href="/MBClib/admin/transaction">Transaction</a></li>
                         <li><a href="/MBClib/admin/history">History</a></li>
                         <li><a href="/MBClib/admin/manage">Manage Books</a></li>
                     </ul>
@@ -62,7 +65,26 @@
         </div>
         <!-- Content -->
         <div class="content">
-            
+            <?php if ($alert): ?>
+                <div id="topAlert" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <?= htmlspecialchars($alert) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
+            <div class="transaction-container">
+                <div class="transaction-header">
+                    <h2>Transaction Management</h2>
+                </div>
+                <div class="transaction-content d-flex justify-content-between align-items-center my-5" style="gap: 2rem;"">
+                    <div class="borrow-content flex-fill">
+                    <button type="button" class="btn btn-primary btn-lg w-100 py-4">Borrow Book</button>
+                    </div>
+                    <div class="return-content flex-fill">
+                        <button type="button" class="btn btn-success btn-lg w-100 py-4">Return Book</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
