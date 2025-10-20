@@ -48,8 +48,8 @@ switch ($url) {
     case 'admin/transaction':
         require 'admin/transaction.php';
         break;
-    case 'admin/borrowed':
-        require 'admin/borrowed.php';
+    case 'admin/history':
+        require 'admin/history.php';
         break;
     case 'admin/manage':
         require 'admin/manage.php';

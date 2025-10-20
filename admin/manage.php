@@ -102,7 +102,7 @@
                     </a>
                     <ul class="sidebar-submenu" id="librarySubmenu">
                         <li><a href="/MBClib/admin/transaction">Transaction</a></li>
-                        <li><a href="/MBClib/admin/borrowed">Borrowed</a></li>
+                        <li><a href="/MBClib/admin/history">History</a></li>
                         <li><a href="#" class="active">Manage Books</a></li>
                     </ul>
                 </li>
@@ -222,7 +222,7 @@
                             <thead>
                                 <tr>
                                 <th>Book ID</th>
-                                <th>Borrowed</th>
+                                <th>Availability</th>
                                 <th>Borrower</th>
                                 <th>Delete</th>
                                 </tr>
@@ -337,7 +337,10 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="addISBN" class="form-label">ISBN</label>
-                                <input type="text" class="form-control" id="addISBN" name="ISBN" required>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="addISBN" name="ISBN" required>
+                                    <button type="button" class="btn btn-outline-secondary" id="fetchBookBtn">Auto-Fill</button>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="addTitle" class="form-label">Title</label>

@@ -98,7 +98,7 @@
                     </a>
                     <ul class="sidebar-submenu" id="librarySubmenu">
                         <li><a href="/MBClib/admin/transaction">Transaction</a></li>
-                        <li><a href="/MBClib/admin/borrowed">Borrowed</a></li>
+                        <li><a href="/MBClib/admin/history">History</a></li>
                         <li><a href="/MBClib/admin/manage" >Manage Books</a></li>
                     </ul>
                 </li>
@@ -148,21 +148,25 @@
                                 <td><?= htmlspecialchars($user['user_id']) ?></td>
                                 <td><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
-                                <td><?= ($user['status'] == '1' || $user['status'] === 1) ? 'True' : 'False' ?></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary"
+                                    <span class="badge <?= ($user['status'] == '1' || $user['status'] === 1) ? 'bg-success' : 'bg-danger' ?>">
+                                        <?= ($user['status'] == '1' || $user['status'] === 1) ? 'Verified' : 'Not Verified' ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-square btn-primary"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editUserModal"
                                     data-user-id="<?= htmlspecialchars($user['user_id']) ?>"
                                     data-user-name="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>"
                                     data-user-email="<?= htmlspecialchars($user['email']) ?>"
                                     data-user-status="<?= htmlspecialchars($user['status']) ?>"
-                                    >Edit</button>
-                                    <button class="btn btn-sm btn-danger"
+                                    ><i class="fa-solid fa-pencil"></i></button>
+                                    <button class="btn btn-square btn-danger"
                                     data-bs-toggle="modal" 
                                     data-bs-target="#deleteUserModal"
                                     data-user-id="<?= htmlspecialchars($user['user_id']) ?>"
-                                    >Delete</button>
+                                    ><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -210,11 +214,11 @@
                                 <label class="form-label">Status:</label><br>
                                 <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="statusTrue" value="true">
-                                <label class="form-check-label" for="statusTrue">True</label>
+                                <label class="form-check-label" for="statusTrue">Verify</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="status" id="statusFalse" value="false">
-                                <label class="form-check-label" for="statusFalse">False</label>
+                                <label class="form-check-label" for="statusFalse">Unverify</label>
                                 </div>
                             </div>
                         </div>

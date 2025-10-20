@@ -44,7 +44,7 @@
                     </a>
                     <ul class="sidebar-submenu" id="librarySubmenu">
                         <li><a href="/MBClib/admin/transaction">Transaction</a></li>
-                        <li><a href="/MBClib/admin/borrowed">Borrowed</a></li>
+                        <li><a href="/MBClib/admin/history">History</a></li>
                         <li><a href="/MBClib/admin/manage">Manage Books</a></li>
                     </ul>
                 </li>

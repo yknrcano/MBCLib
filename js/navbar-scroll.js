@@ -144,7 +144,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         tbody.innerHTML += `
                             <tr>
                                 <td>${book.book_id}</td>
-                                <td>${book.is_borrowed == 1 ? 'True' : 'False'}</td>
+                                <td>
+                                    <span class="badge ${book.is_borrowed == 1 ? 'bg-danger' : 'bg-success'}">
+                                        ${book.is_borrowed == 1 ? 'No' : 'Yes'}
+                                    </span>
+                                </td>
                                 <td>${book.reader_name ? book.reader_name : 'None'}</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary"
@@ -235,3 +239,35 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('fetchBookBtn').addEventListener('click', function() {
+        const isbn = document.getElementById('addISBN').value.trim();
+        if (!isbn) return;
+
+        fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`)
+            .then(response => response.json())
+            .then(data => {
+                const bookData = data[`ISBN:${isbn}`];
+                if (bookData) {
+                    document.getElementById('addTitle').value = bookData.title || '';
+                    document.getElementById('addAuthor').value = bookData.authors && bookData.authors.length > 0 ? bookData.authors[0].name : '';
+                    if (bookData.publish_date) {
+                        // Try to convert publish_date to yyyy-mm-dd
+                        const date = new Date(bookData.publish_date);
+                        if (!isNaN(date)) {
+                            document.getElementById('addDatePublished').value = date.toISOString().slice(0,10);
+                        }
+                    }
+                } else {
+                    alert('Book not found for this ISBN.');
+                }
+            })
+            .catch(() => alert('Failed to fetch book info.'));
+    });
+
+    document.getElementById('addISBN').addEventListener('blur', function() {
+        document.getElementById('fetchBookBtn').click();
+    });
+});
+
