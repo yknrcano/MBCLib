@@ -119,7 +119,10 @@
         <!-- Content -->
         <div class="content">
             <div class="manage-book-container">
-                <h2>Manage Books</h2>
+                <div class="header-manage-book-content">
+                    <h2>Manage Books</h2>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBookModal"><i class="fa-solid fa-plus"></i> Add Book</button>
+                </div>
                 <div class="book-list">
                     <div class="d-flex justify-content-end mb-3">
                         <form method="get" class="d-flex align-items-center" style="max-width:400px;">
@@ -146,7 +149,11 @@
                                 <td><?= htmlspecialchars($book['Title']) ?></td>
                                 <td><?= htmlspecialchars($book['Author']) ?></td>
                                 <td><?= htmlspecialchars($book['Date_published']) ?></td>
-                                <td><?= htmlspecialchars($book['status']) ?></td>
+                                <td>
+                                    <span class="badge <?= $book['status'] === 'Available' ? 'bg-success' : 'bg-danger' ?>">
+                                        <?= htmlspecialchars($book['status']) ?>
+                                    </span>
+                                </td>
                                 <td><?= htmlspecialchars($book['available_stocks']) ?>/<?= htmlspecialchars($book['stocks']) ?></td>         
                                 <td>
                                     <div class="d-flex gap-2 justify-content-center align-items-center action-btn-group">
@@ -245,6 +252,42 @@
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Add Book Modal -->
+        <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <form method="post" action="../functions/add_book.php" id="addBookForm">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="addISBN" class="form-label">ISBN</label>
+                    <input type="text" class="form-control" id="addISBN" name="ISBN" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="addTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="addTitle" name="Title" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="addAuthor" class="form-label">Author</label>
+                    <input type="text" class="form-control" id="addAuthor" name="Author" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="addDatePublished" class="form-label">Date Published</label>
+                    <input type="date" class="form-control" id="addDatePublished" name="Date_published" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Book</button>
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
               </div>

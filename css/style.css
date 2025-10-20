@@ -1584,3 +1584,10 @@ footer {
 .action-btn-group form {
     margin: 0;
 }
+
+.header-manage-book-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
