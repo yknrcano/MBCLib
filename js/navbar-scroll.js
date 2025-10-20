@@ -172,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     });
 
+    // Edit BookModal
     var editBookModal = document.getElementById('editBookModal');
     editBookModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
@@ -182,33 +183,35 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('editBookDate').value = button.getAttribute('data-date');
     });
 
+    // Delete All Books Modal
     var deleteBookModal = document.getElementById('deleteBookModal');
-    var checkbox = document.getElementById('confirmDeleteBookCheckbox');
-    var deleteBtn = document.getElementById('deleteBookBtn');
+    var deleteBookCheckbox = document.getElementById('confirmDeleteBookCheckbox');
+    var deleteBookBtn = document.getElementById('deleteBookBtn');
     deleteBookModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         document.getElementById('deleteBookIsbn').value = button.getAttribute('data-isbn');
-        checkbox.checked = false;
-        deleteBtn.disabled = true;
+        deleteBookCheckbox.checked = false;
+        deleteBookBtn.disabled = true;
     });
-    if (checkbox && deleteBtn) {
-        checkbox.addEventListener('change', function() {
-            deleteBtn.disabled = !checkbox.checked;
+    if (deleteBookCheckbox && deleteBookBtn) {
+        deleteBookCheckbox.addEventListener('change', function() {
+            deleteBookBtn.disabled = !deleteBookCheckbox.checked;
         });
     }
 
+    // Delete Single Book Modal
     var deleteSingleBookModal = document.getElementById('deleteSingleBookModal');
-    var checkbox = document.getElementById('confirmDeleteSingleBookCheckbox');
-    var deleteBtn = document.getElementById('deleteSingleBookBtn');
+    var deleteSingleBookCheckbox = document.getElementById('confirmDeleteSingleBookCheckbox');
+    var deleteSingleBookBtn = document.getElementById('deleteSingleBookBtn');
     deleteSingleBookModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         document.getElementById('deleteSingleBookId').value = button.getAttribute('data-book-id');
-        checkbox.checked = false;
-        deleteBtn.disabled = true;
+        deleteSingleBookCheckbox.checked = false;
+        deleteSingleBookBtn.disabled = true;
     });
-    if (checkbox && deleteBtn) {
-        checkbox.addEventListener('change', function() {
-            deleteBtn.disabled = !checkbox.checked;
+    if (deleteSingleBookCheckbox && deleteSingleBookBtn) {
+        deleteSingleBookCheckbox.addEventListener('change', function() {
+            deleteSingleBookBtn.disabled = !deleteSingleBookCheckbox.checked;
         });
     }
 
