@@ -144,6 +144,120 @@
       <p>© 2021 All rights reserved marie - bernarde college inc.</p>
     </div>
 
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="functions/auth.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">User Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-logo">
+                            <img src="assets/MBC-Logo.png" alt="Logo" height="200">
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <span class="input-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+                            <input type="email" name="email" class="form-control ps-5" id="loginEmail" placeholder="Email address" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <span class="input-icon">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" name="password" class="form-control ps-5" id="loginPassword" placeholder="Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('loginPassword', 'togglePasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <button type="submit" class="btn btn-primary w-100" name="login-btn">Login</button>
+                            <div class="btn-row">
+                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Register</a>
+                                <a class="overlay-btn" href="#" data-bs-toggle="modal" data-bs-target="#forgotModal" data-bs-dismiss="modal">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+ <!-- Registration Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <?php if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+                <?= htmlspecialchars($_SESSION['message']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content">
+                <form action="functions/auth.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 position-relative">
+                            <input type="text" name="id_number" class="form-control" placeholder="ID Number" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" name="firstname" class="form-control" placeholder="First Name" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" name="lastname" class="form-control" placeholder="Last Name" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="text" name="phone" class="form-control" placeholder="Contact Number" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="email" name="email" class="form-control" placeholder="Email address" required>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" name="password" class="form-control" id="registerPassword" placeholder="Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerPassword', 'registerPasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
+                            </span>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <input type="password" class="form-control" name="Rpassword" id="registerConfirmPassword" placeholder="Confirm Password" required>
+                            <span class="password-toggle" style="cursor:pointer;" onclick="togglePassword('registerConfirmPassword', 'registerConfirmPasswordIcon')">
+                                <i id="togglePasswordIcon" class="fa-regular fa-eye-slash"></i>
+                            </span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" name="regis-btn">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg-custom">
+            <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotModalLabel">Forgot Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 position-relative">
+                        <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                        <input type="email" class="form-control ps-5" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+  
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/374eee3e25.js" crossorigin="anonymous"></script>
