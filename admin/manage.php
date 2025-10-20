@@ -59,6 +59,8 @@
 
     $total_pages = ceil($total_books / $limit);
 
+    $alert = $_SESSION['alert'] ?? '';
+    unset($_SESSION['alert']);
 ?>
 
 <!DOCTYPE html>
@@ -118,6 +120,13 @@
         </div>
         <!-- Content -->
         <div class="content">
+            <?php if ($alert): ?>
+                <div id="topAlert" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <?= htmlspecialchars($alert) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <div class="manage-book-container">
                 <div class="header-manage-book-content">
                     <h2>Manage Books</h2>
@@ -170,10 +179,11 @@
                                             data-author="<?= htmlspecialchars($book['Author']) ?>"
                                             data-date="<?= htmlspecialchars($book['Date_published']) ?>"
                                         ><i class="fa-solid fa-pencil"></i></button>
-                                        <form method="post" action="../functions/delete_books_by_isbn.php" onsubmit="return confirm('Delete ALL books with this ISBN?');">
-                                            <input type="hidden" name="isbn" value="<?= htmlspecialchars($book['ISBN']) ?>">
-                                            <button type="submit" class="btn btn-square btn-danger"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
+                                        <button class="btn btn-square btn-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteBookModal"
+                                            data-isbn="<?= htmlspecialchars($book['ISBN']) ?>"
+                                        ><i class="fa-solid fa-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -201,99 +211,180 @@
 
         <!-- View Book Modal -->
         <div class="modal fade" id="viewBookModal" tabindex="-1" aria-labelledby="viewBookModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="viewBookModalLabel">Books for ISBN: <span id="viewModalIsbn"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Book ID</th>
-                      <th>Borrowed</th>
-                      <th>Borrower</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody id="viewBookModalBody">
-                    <!-- Filled by JS -->
-                  </tbody>
-                </table>
-              </div>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewBookModalLabel">Books for ISBN: <span id="viewModalIsbn"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                <th>Book ID</th>
+                                <th>Borrowed</th>
+                                <th>Borrower</th>
+                                <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody id="viewBookModalBody">
+                                <!-- Filled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
         <!-- Edit Book Modal -->
         <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <form id="editBookForm" method="post" action="../functions/edit_book_by_isbn.php">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="editBookModalLabel">Edit Book Info (All with ISBN: <span id="editModalIsbn"></span>)</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <input type="hidden" name="isbn" id="editBookIsbn">
-                  <div class="mb-3">
-                    <label class="form-label">Title:</label>
-                    <input type="text" class="form-control" name="title" id="editBookTitle" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Author:</label>
-                    <input type="text" class="form-control" name="author" id="editBookAuthor" required>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Date Published:</label>
-                    <input type="date" class="form-control" name="date_published" id="editBookDate" required>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Save changes</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-              </div>
-            </form>
-          </div>
+            <div class="modal-dialog">
+                <form id="editBookForm" method="post" action="../functions/edit_book_by_isbn.php">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editBookModalLabel">Edit Book Info (All with ISBN: <span id="editModalIsbn"></span>)</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="isbn" id="editBookIsbn">
+                            <div class="mb-3">
+                                <label class="form-label">Title:</label>
+                                <input type="text" class="form-control" name="title" id="editBookTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Author:</label>
+                                <input type="text" class="form-control" name="author" id="editBookAuthor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Date Published:</label>
+                                <input type="date" class="form-control" name="date_published" id="editBookDate" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete All Book Modal -->
+        <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="deleteBookForm" method="post" action="../functions/delete_books_by_isbn.php">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteBookModalLabel">Delete Books</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="isbn" id="deleteBookIsbn">
+                            <p>Are you sure you want to delete <b>ALL</b> books with this ISBN?</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirmDeleteBookCheckbox">
+                                <label class="form-check-label" for="confirmDeleteBookCheckbox">
+                                I confirm the deletion of all books with this ISBN.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger" id="deleteBookBtn" disabled>Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Single Book Modal -->
+        <div class="modal fade" id="deleteSingleBookModal" tabindex="-1" aria-labelledby="deleteSingleBookModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="deleteSingleBookForm" method="post" action="../functions/delete_book.php">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteSingleBookModalLabel">Delete Book</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="book_id" id="deleteSingleBookId">
+                            <p>Are you sure you want to delete this book?</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="confirmDeleteSingleBookCheckbox">
+                                <label class="form-check-label" for="confirmDeleteSingleBookCheckbox">
+                                    I confirm the deletion of this book.
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger" id="deleteSingleBookBtn" disabled>Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <!-- Add Book Modal -->
         <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <form method="post" action="../functions/add_book.php" id="addBookForm">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="mb-3">
-                    <label for="addISBN" class="form-label">ISBN</label>
-                    <input type="text" class="form-control" id="addISBN" name="ISBN" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="addTitle" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="addTitle" name="Title" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="addAuthor" class="form-label">Author</label>
-                    <input type="text" class="form-control" id="addAuthor" name="Author" required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="addDatePublished" class="form-label">Date Published</label>
-                    <input type="date" class="form-control" id="addDatePublished" name="Date_published" required>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Book</button>
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-              </div>
-            </form>
-          </div>
+            <div class="modal-dialog">
+                <form method="post" action="../functions/add_book.php" id="addBookForm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="addISBN" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="addISBN" name="ISBN" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="addTitle" name="Title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addAuthor" class="form-label">Author</label>
+                                <input type="text" class="form-control" id="addAuthor" name="Author" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addDatePublished" class="form-label">Date Published</label>
+                                <input type="date" class="form-control" id="addDatePublished" name="Date_published" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="addQuantity" class="form-label">Quantity</label>
+                                <div class="input-group" style="max-width: 160px;">
+                                    <button type="button" class="btn btn-outline-secondary" id="decrementQty">-</button>
+                                    <input type="number" class="form-control text-center" id="addQuantity" name="Quantity" value="1" min="1" required>
+                                    <button type="button" class="btn btn-outline-secondary" id="incrementQty">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Book</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
+
+        <!-- QR Code Modal -->
+        <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="qrCodeModalLabel">Book QR Code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="qrCodeImage" src="" alt="QR Code" style="max-width: 300px; max-height: 300px;">
+                        <div id="qrCodeNotFound" class="text-danger mt-2" style="display:none;">QR code not found.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 

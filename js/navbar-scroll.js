@@ -147,10 +147,19 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <td>${book.is_borrowed == 1 ? 'True' : 'False'}</td>
                                 <td>${book.reader_name ? book.reader_name : 'None'}</td>
                                 <td>
-                                    <form method="post" action="../functions/delete_book.php" onsubmit="return confirm('Delete this book?');">
-                                        <input type="hidden" name="book_id" value="${book.book_id}">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
+                                    <button class="btn btn-sm btn-secondary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#qrCodeModal"
+                                        data-book-id="${book.book_id}"
+                                        data-qr-code="${book.qr_code ? book.qr_code : ''}">
+                                        <i class="fa-solid fa-qrcode"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteSingleBookModal"
+                                        data-book-id="${book.book_id}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         `;
@@ -167,5 +176,62 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('editBookTitle').value = button.getAttribute('data-title');
         document.getElementById('editBookAuthor').value = button.getAttribute('data-author');
         document.getElementById('editBookDate').value = button.getAttribute('data-date');
+    });
+
+    var deleteBookModal = document.getElementById('deleteBookModal');
+    var checkbox = document.getElementById('confirmDeleteBookCheckbox');
+    var deleteBtn = document.getElementById('deleteBookBtn');
+    deleteBookModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('deleteBookIsbn').value = button.getAttribute('data-isbn');
+        checkbox.checked = false;
+        deleteBtn.disabled = true;
+    });
+    if (checkbox && deleteBtn) {
+        checkbox.addEventListener('change', function() {
+            deleteBtn.disabled = !checkbox.checked;
+        });
+    }
+
+    var deleteSingleBookModal = document.getElementById('deleteSingleBookModal');
+    var checkbox = document.getElementById('confirmDeleteSingleBookCheckbox');
+    var deleteBtn = document.getElementById('deleteSingleBookBtn');
+    deleteSingleBookModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('deleteSingleBookId').value = button.getAttribute('data-book-id');
+        checkbox.checked = false;
+        deleteBtn.disabled = true;
+    });
+    if (checkbox && deleteBtn) {
+        checkbox.addEventListener('change', function() {
+            deleteBtn.disabled = !checkbox.checked;
+        });
+    }
+
+    var qrCodeModal = document.getElementById('qrCodeModal');
+    qrCodeModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var qrCode = button.getAttribute('data-qr-code');
+        var img = document.getElementById('qrCodeImage');
+        var notFound = document.getElementById('qrCodeNotFound');
+        if (qrCode) {
+            img.src = '../' + qrCode;
+            img.style.display = '';
+            notFound.style.display = 'none';
+        } else {
+            img.src = '';
+            img.style.display = 'none';
+            notFound.style.display = '';
+        }
+    });
+
+    const qtyInput = document.getElementById('addQuantity');
+    document.getElementById('incrementQty').addEventListener('click', function() {
+        qtyInput.value = parseInt(qtyInput.value) + 1;
+    });
+    document.getElementById('decrementQty').addEventListener('click', function() {
+        if (parseInt(qtyInput.value) > 1) {
+            qtyInput.value = parseInt(qtyInput.value) - 1;
+        }
     });
 });

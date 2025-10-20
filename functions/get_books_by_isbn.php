@@ -3,7 +3,7 @@ require_once __DIR__ . '/dbcon.php';
 $isbn = $_GET['isbn'] ?? '';
 $books = [];
 if ($isbn) {
-    $sql = "SELECT b.book_id, b.is_borrowed, u.firstname AS reader_name
+    $sql = "SELECT b.book_id, b.is_borrowed, u.firstname AS reader_name, b.qr_code
             FROM books b
             LEFT JOIN users u ON b.Reader_id = u.user_id
             WHERE b.ISBN = ?";
