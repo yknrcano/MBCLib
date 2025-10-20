@@ -30,7 +30,7 @@ if(isset($_POST['regis-btn'])){
         exit();
     } 
     else if(!in_array($domain, $whitelist)){
-        $_SESSION['message'] = "Invalid email please use you school email";
+        $_SESSION['message'] = "Invalid email please use your school email";
         $_SESSION['modal_show'] = "registerModal";
         header("Location: ../index.php?url=home");
         exit();
@@ -64,8 +64,8 @@ if(isset($_POST['regis-btn'])){
                     $mail->isSMTP();                                     
                     $mail->Host = 'smtp.gmail.com';                      
                     $mail->SMTPAuth = true;                               
-                    $mail->Username = 'yukinerocano@gmail.com';     
-                    $mail->Password = 'csksvmmydkfrpfmy';                
+                    $mail->Username = 'adriannoveda2@gmail.com';     
+                    $mail->Password = 'nvyuxxarpuokyris';                
                     $mail->SMTPOptions = array(
                         'ssl' => array(
                         'verify_peer' => false,
@@ -76,15 +76,15 @@ if(isset($_POST['regis-btn'])){
                     $mail->SMTPSecure = 'ssl';                           
                     $mail->Port = 465;                                   
 
-                    $mail->setFrom('yukinerocano@gmail.com');
+                    $mail->setFrom('adriannoveda2@gmail.com');
                     
                     //Recipients
                     $mail->addAddress($email);              
-                    $mail->addReplyTo('yukinerocano@gmail.com');
+                    $mail->addReplyTo('donotreply@mbc.edu.ph');
                     
                     //Content
                     $mail->isHTML(true);                                  
-                    $mail->Subject = 'ECommerce Site Email Activation';
+                    $mail->Subject = 'Online Library Email Activation';
                     $mail->Body    = $message;
 
                     $mail->send();
