@@ -134,7 +134,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3 position-relative">
-                            <input type="text" name="id_number" class="form-control" placeholder="ID Number" required>
+                            <input type="text" name="id_no" class="form-control" placeholder="ID Number" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" required>
                         </div>
                         <div class="mb-3 position-relative">
                             <input type="text" name="firstname" class="form-control" placeholder="First Name" required>

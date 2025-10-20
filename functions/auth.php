@@ -8,14 +8,14 @@ include('../functions/dbcon.php');
 
 if(isset($_POST['regis-btn'])){ 
 
-    $idnumber = mysqli_real_escape_string($con, $_POST['id_number']);
+    $idnumber = mysqli_real_escape_string($con, $_POST['id_no']);
     $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
     $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $phone = mysqli_real_escape_string($con, $_POST['phone']);
     $password = mysqli_real_escape_string($con, $_POST['password']);
     $Rpassword = mysqli_real_escape_string($con, $_POST['Rpassword']);
-    $code = mysqli_real_escape_string($con, md5($_POST['email'].rand(10,9999)));
+    // $code = mysqli_real_escape_string($con, md5($_POST['email'].rand(10,9999)));
    
     $domain = substr(strrchr($email, "@" ), 1 );
     $whitelist = array('mbc.edu.ph', 'admin.mbc.edu.ph', 'gmail.com');
