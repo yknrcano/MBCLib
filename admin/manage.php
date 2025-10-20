@@ -25,9 +25,10 @@
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks
+    $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks,
+            SUM(CASE WHEN is_borrowed = 0 OR is_borrowed IS NULL THEN 1 ELSE 0 END) AS available_stocks
             FROM books
-            WHERE ISBN LIKE ? OR Title LIKE ? OR Author LIKE ?
+            " . ($search !== '' ? "WHERE ISBN LIKE ? OR Title LIKE ? OR Author LIKE ?" : "") . "
             GROUP BY ISBN, Title, Author, Date_published
             LIMIT ? OFFSET ?";
     $stmt = mysqli_prepare($con, $sql);
@@ -40,16 +41,18 @@
         $count_result = mysqli_query($con, $count_sql);
         $total_books = mysqli_fetch_row($count_result)[0];
 
-        $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks
-                FROM books
-                GROUP BY ISBN, Title, Author, Date_published
-                LIMIT $limit OFFSET $offset";
+        $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks,
+            SUM(CASE WHEN is_borrowed = 0 OR is_borrowed IS NULL THEN 1 ELSE 0 END) AS available_stocks
+            FROM books
+            GROUP BY ISBN, Title, Author, Date_published
+            LIMIT $limit OFFSET $offset";
         $result = mysqli_query($con, $sql);
     }
 
     $books = [];
     if ($result && mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
+            $row['status'] = ($row['available_stocks'] == 0) ? 'Not Available' : 'Available';
             $books[] = $row;
         }
     }
@@ -120,7 +123,7 @@
                 <div class="book-list">
                     <div class="d-flex justify-content-end mb-3">
                         <form method="get" class="d-flex align-items-center" style="max-width:400px;">
-                            <input type="text" name="search" class="form-control me-2" placeholder="Search by ISBN" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                            <input type="text" name="search" class="form-control me-2" placeholder="Search by ISBN, Title, Author" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                             <button type="submit" class="btn btn-primary search-btn">Search</button>
                         </form>
                     </div>
@@ -144,17 +147,27 @@
                                 <td><?= htmlspecialchars($book['Author']) ?></td>
                                 <td><?= htmlspecialchars($book['Date_published']) ?></td>
                                 <td><?= htmlspecialchars($book['status']) ?></td>
-                                <td><?= htmlspecialchars($book['stocks']) ?></td>
+                                <td><?= htmlspecialchars($book['available_stocks']) ?>/<?= htmlspecialchars($book['stocks']) ?></td>         
                                 <td>
-                                    <button class="btn btn-sm btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editBookModal"
-                                    data-isbn="<?= htmlspecialchars($book['ISBN']) ?>"
-                                    >Edit</button>
-                                    <form method="post" action="../functions/delete_books_by_isbn.php" onsubmit="return confirm('Delete ALL books with this ISBN?');">
-                                        <input type="hidden" name="isbn" value="<?= htmlspecialchars($book['ISBN']) ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
+                                    <div class="d-flex gap-2 justify-content-center align-items-center action-btn-group">
+                                        <button class="btn btn-square btn-success"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#viewBookModal"
+                                            data-isbn="<?= htmlspecialchars($book['ISBN']) ?>"
+                                        ><i class="fa-solid fa-eye"></i></button>
+                                        <button class="btn btn-square btn-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#editBookModal"
+                                            data-isbn="<?= htmlspecialchars($book['ISBN']) ?>"
+                                            data-title="<?= htmlspecialchars($book['Title']) ?>"
+                                            data-author="<?= htmlspecialchars($book['Author']) ?>"
+                                            data-date="<?= htmlspecialchars($book['Date_published']) ?>"
+                                        ><i class="fa-solid fa-pencil"></i></button>
+                                        <form method="post" action="../functions/delete_books_by_isbn.php" onsubmit="return confirm('Delete ALL books with this ISBN?');">
+                                            <input type="hidden" name="isbn" value="<?= htmlspecialchars($book['ISBN']) ?>">
+                                            <button type="submit" class="btn btn-square btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -179,12 +192,12 @@
             </div>
         </div>
 
-        <!-- Edit Book Modal -->
-        <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+        <!-- View Book Modal -->
+        <div class="modal fade" id="viewBookModal" tabindex="-1" aria-labelledby="viewBookModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="editBookModalLabel">Books for ISBN: <span id="modalIsbn"></span></h5>
+                <h5 class="modal-title" id="viewBookModalLabel">Books for ISBN: <span id="viewModalIsbn"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
               <div class="modal-body">
@@ -193,15 +206,49 @@
                     <tr>
                       <th>Book ID</th>
                       <th>Borrowed</th>
-                      <th>Actions</th>
+                      <th>Borrower</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
-                  <tbody id="editBookModalBody">
+                  <tbody id="viewBookModalBody">
                     <!-- Filled by JS -->
                   </tbody>
                 </table>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Edit Book Modal -->
+        <div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <form id="editBookForm" method="post" action="../functions/edit_book_by_isbn.php">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editBookModalLabel">Edit Book Info (All with ISBN: <span id="editModalIsbn"></span>)</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <input type="hidden" name="isbn" id="editBookIsbn">
+                  <div class="mb-3">
+                    <label class="form-label">Title:</label>
+                    <input type="text" class="form-control" name="title" id="editBookTitle" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Author:</label>
+                    <input type="text" class="form-control" name="author" id="editBookAuthor" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Date Published:</label>
+                    <input type="date" class="form-control" name="date_published" id="editBookDate" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
     </div>

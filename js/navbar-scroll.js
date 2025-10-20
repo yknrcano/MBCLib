@@ -125,32 +125,47 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    var editBookModal = document.getElementById('editBookModal');
-    editBookModal.addEventListener('show.bs.modal', function (event) {
+    // View Modal
+    var viewBookModal = document.getElementById('viewBookModal');
+    viewBookModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
         var isbn = button.getAttribute('data-isbn');
-        document.getElementById('modalIsbn').textContent = isbn;
+        document.getElementById('viewModalIsbn').textContent = isbn;
 
-        // AJAX to fetch all book_ids for this ISBN
         fetch('../functions/get_books_by_isbn.php?isbn=' + encodeURIComponent(isbn))
             .then(response => response.json())
             .then(data => {
-                var tbody = document.getElementById('editBookModalBody');
+                var tbody = document.getElementById('viewBookModalBody');
                 tbody.innerHTML = '';
-                data.forEach(function(book) {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${book.book_id}</td>
-                            <td>${book.borrowed ? 'True' : 'False'}</td>
-                            <td>
-                                <form method="post" action="../functions/delete_book.php" onsubmit="return confirm('Delete this book?');">
-                                    <input type="hidden" name="book_id" value="${book.book_id}">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    `;
-                });
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4">No books found for this ISBN.</td></tr>';
+                } else {
+                    data.forEach(function(book) {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${book.book_id}</td>
+                                <td>${book.is_borrowed == 1 ? 'True' : 'False'}</td>
+                                <td>${book.reader_name ? book.reader_name : 'None'}</td>
+                                <td>
+                                    <form method="post" action="../functions/delete_book.php" onsubmit="return confirm('Delete this book?');">
+                                        <input type="hidden" name="book_id" value="${book.book_id}">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
             });
+    });
+
+    var editBookModal = document.getElementById('editBookModal');
+    editBookModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        document.getElementById('editBookIsbn').value = button.getAttribute('data-isbn');
+        document.getElementById('editModalIsbn').textContent = button.getAttribute('data-isbn');
+        document.getElementById('editBookTitle').value = button.getAttribute('data-title');
+        document.getElementById('editBookAuthor').value = button.getAttribute('data-author');
+        document.getElementById('editBookDate').value = button.getAttribute('data-date');
     });
 });
