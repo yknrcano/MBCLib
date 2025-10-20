@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2025 at 09:50 AM
+-- Generation Time: Oct 20, 2025 at 10:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,16 +81,17 @@ CREATE TABLE `users` (
   `ver_code` int(150) NOT NULL,
   `status` tinyint(1) NOT NULL,
   `acc_creation` date NOT NULL DEFAULT current_timestamp(),
-  `type` tinyint(4) NOT NULL
+  `type` tinyint(4) NOT NULL,
+  `id_no` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `email`, `phone`, `password`, `ver_code`, `status`, `acc_creation`, `type`) VALUES
-(1, 'Yuan', 'cano', 'yuks@mbc.edu.ph', 2147483647, 'asdfasdf123', 21, 1, '2025-10-08', 0),
-(2, 'fgkldfgk', 'asdl;fk', 'asdf@mbc.edu.ph', 92384273, 'asdfasdf123', 2, 1, '2025-10-08', 1);
+INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `email`, `phone`, `password`, `ver_code`, `status`, `acc_creation`, `type`, `id_no`) VALUES
+(1, 'Yuan', 'cano', 'yuks@mbc.edu.ph', 2147483647, 'asdfasdf123', 21, 1, '2025-10-08', 0, '424002719AB'),
+(2, 'fgkldfgk', 'asdl;fk', 'asdf@mbc.edu.ph', 92384273, 'asdfasdf123', 2, 1, '2025-10-08', 1, '');
 
 --
 -- Indexes for dumped tables

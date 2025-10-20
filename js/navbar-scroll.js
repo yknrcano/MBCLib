@@ -80,9 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var editUserModal = document.getElementById('editUserModal');
     editUserModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
+        document.getElementById('editUserStudentNumber').textContent = button.getAttribute('data-id-no');
         document.getElementById('editUserId').value = button.getAttribute('data-user-id');
         document.getElementById('editUserName').textContent = button.getAttribute('data-user-name');
         document.getElementById('editUserEmail').textContent = button.getAttribute('data-user-email');
+        document.getElementById('editUserContact').textContent = button.getAttribute('data-user-contact');
         var status = button.getAttribute('data-user-status');
         document.getElementById('statusTrue').checked = (status === 'true' || status === '1');
         document.getElementById('statusFalse').checked = (status === 'false' || status === '0');

@@ -26,6 +26,14 @@
         </div>
     </div>
 
+    <?php if (isset($_SESSION['message'])): ?>
+        <div id="topAlert" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_SESSION['message']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php endif; ?>
+
     <nav class="navbar sticky-top navbar-expand-xl navbar-home">
         <div class="container-fluid navbar-inner">
             <img height="73" id="logo" src="assets/MBC-Logo.png" alt="Logo" class="d-inline-block align-text-center">
@@ -66,14 +74,6 @@
             </div>
         </div>
     </nav>
-
-     <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
-            <?= htmlspecialchars($_SESSION['message']) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['message']); ?>
-    <?php endif; ?>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">

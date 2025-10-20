@@ -135,9 +135,10 @@
                     <table class="table table-striped align-middle">
                         <thead class="table-dark">
                             <tr>
-                                <th>User ID</th>
+                                <th>Student Number</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Contact</th>
                                 <th>Verification</th>
                                 <th>Actions</th>
                             </tr>
@@ -145,9 +146,10 @@
                         <tbody>
                             <?php foreach ($users as $user): ?>
                             <tr>
-                                <td><?= htmlspecialchars($user['user_id']) ?></td>
+                                <td><?= htmlspecialchars($user['id_no']) ?></td>
                                 <td><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?></td>
                                 <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td><?= htmlspecialchars($user['phone']) ?></td>
                                 <td>
                                     <span class="badge <?= ($user['status'] == '1' || $user['status'] === 1) ? 'bg-success' : 'bg-danger' ?>">
                                         <?= ($user['status'] == '1' || $user['status'] === 1) ? 'Verified' : 'Not Verified' ?>
@@ -158,8 +160,10 @@
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editUserModal"
                                     data-user-id="<?= htmlspecialchars($user['user_id']) ?>"
+                                    data-id-no="<?= htmlspecialchars($user['id_no']) ?>"
                                     data-user-name="<?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>"
                                     data-user-email="<?= htmlspecialchars($user['email']) ?>"
+                                    data-user-contact="<?= htmlspecialchars($user['phone']) ?>"
                                     data-user-status="<?= htmlspecialchars($user['status']) ?>"
                                     ><i class="fa-solid fa-pencil"></i></button>
                                     <button class="btn btn-square btn-danger"
@@ -191,17 +195,21 @@
             </div>
         </div>
 
-        <!-- Edit User Modal -->
+        <!-- View User Modal -->
         <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <form id="editUserForm" method="post" action="../functions/edit_user.php">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">Edit User Status</h5>
+                            <h5 class="modal-title" id="editUserModalLabel">View User Status</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="user_id" id="editUserId">
+                            <div class="mb-3">
+                                <label class="form-label">Student Number:</label>
+                                <div id="editUserStudentNumber" class="form-control-plaintext"></div>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Name:</label>
                                 <div id="editUserName" class="form-control-plaintext"></div>
@@ -209,6 +217,10 @@
                             <div class="mb-3">
                                 <label class="form-label">Email:</label>
                                 <div id="editUserEmail" class="form-control-plaintext"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Contact:</label>
+                                <div id="editUserContact" class="form-control-plaintext"></div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Status:</label><br>
