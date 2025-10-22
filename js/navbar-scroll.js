@@ -178,11 +178,18 @@ document.addEventListener("DOMContentLoaded", function() {
     var editBookModal = document.getElementById('editBookModal');
     editBookModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
-        document.getElementById('editBookIsbn').value = button.getAttribute('data-isbn');
-        document.getElementById('editModalIsbn').textContent = button.getAttribute('data-isbn');
+        var cover = button.getAttribute('data-cover');
+        var coverPreview = document.getElementById('editBookCoverPreview');
+        if (cover) {
+            coverPreview.src = '../assets/book_cover/' + cover;
+        } else {
+            coverPreview.src = '../assets/book_cover/default.png';
+        }
         document.getElementById('editBookTitle').value = button.getAttribute('data-title');
         document.getElementById('editBookAuthor').value = button.getAttribute('data-author');
         document.getElementById('editBookDate').value = button.getAttribute('data-date');
+        document.getElementById('editBookIsbn').value = button.getAttribute('data-isbn');
+        document.getElementById('editModalIsbn').textContent = button.getAttribute('data-isbn');
     });
 
     // Delete All Books Modal
@@ -224,7 +231,8 @@ document.addEventListener("DOMContentLoaded", function() {
         var img = document.getElementById('qrCodeImage');
         var notFound = document.getElementById('qrCodeNotFound');
         if (qrCode) {
-            img.src = '../' + qrCode;
+            // Prepend the correct folder path
+            img.src = '../assets/qrcodes/' + qrCode;
             img.style.display = '';
             notFound.style.display = 'none';
         } else {
@@ -243,6 +251,13 @@ document.addEventListener("DOMContentLoaded", function() {
             qtyInput.value = parseInt(qtyInput.value) - 1;
         }
     });
+});
+
+document.getElementById('editBookCover').addEventListener('change', function(e) {
+    const [file] = e.target.files;
+    if (file) {
+        document.getElementById('editBookCoverPreview').src = URL.createObjectURL(file);
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -264,11 +279,35 @@ document.addEventListener('DOMContentLoaded', function() {
                             document.getElementById('addDatePublished').value = date.toISOString().slice(0,10);
                         }
                     }
+                    // COVER FETCH 
+                    let coverUrl = '';
+                    if (bookData.cover && bookData.cover.large) {
+                        coverUrl = bookData.cover.large;
+                    } else if (bookData.cover && bookData.cover.medium) {
+                        coverUrl = bookData.cover.medium;
+                    } else if (bookData.cover && bookData.cover.small) {
+                        coverUrl = bookData.cover.small;
+                    }
+                    document.getElementById('coverUrl').value = coverUrl;
+                    const preview = document.getElementById('coverPreview');
+                    if (coverUrl) {
+                        preview.src = coverUrl;
+                        preview.style.display = '';
+                    } else {
+                        preview.src = '';
+                        preview.style.display = 'none';
+                    }
                 } else {
                     alert('Book not found for this ISBN.');
+                    document.getElementById('coverPreview').style.display = 'none';
+                    document.getElementById('coverUrl').value = '';
                 }
             })
-            .catch(() => alert('Failed to fetch book info.'));
+            .catch(() => {
+                alert('Failed to fetch book info.');
+                document.getElementById('coverPreview').style.display = 'none';
+                document.getElementById('coverUrl').value = '';
+            });
     });
 
     document.getElementById('addISBN').addEventListener('blur', function() {
@@ -276,3 +315,107 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const isbnInput = document.getElementById('book_id');
+    const bookNameInput = document.getElementById('book_name');
+    const bookAuthorInput = document.getElementById('book_author');
+    let fetchTimeout = null;
+
+    isbnInput.addEventListener('input', function() {
+        clearTimeout(fetchTimeout);
+        const isbn = isbnInput.value.trim();
+        if (!isbn) {
+            bookNameInput.value = '';
+            bookAuthorInput.value = '';
+            return;
+        }
+        // Debounce to avoid too many requests
+        fetchTimeout = setTimeout(() => {
+            fetch(`../functions/get_book_by_isbn.php?isbn=${encodeURIComponent(isbn)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.title) {
+                        bookNameInput.value = data.title;
+                        bookAuthorInput.value = data.author;
+                    } else {
+                        bookNameInput.value = '';
+                        bookAuthorInput.value = '';
+                    }
+                })
+                .catch(() => {
+                    bookNameInput.value = '';
+                    bookAuthorInput.value = '';
+                });
+        }, 300); // 300ms debounce
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    let qrReader;
+    let qrScanModal = document.getElementById('qrScanModal');
+    let borrowBookModal = document.getElementById('borrowBookModal');
+
+    // Show QR scanner when QR modal is shown
+    qrScanModal.addEventListener('shown.bs.modal', function () {
+        if (!qrReader) {
+            qrReader = new Html5Qrcode("qr-reader");
+        }
+        qrReader.start(
+            { facingMode: "environment" },
+            {
+                fps: 10,
+                qrbox: 250
+            },
+            qrCodeMessage => {
+                // Extract ISBN from QR code (adjust regex if needed)
+                let isbn = qrCodeMessage.replace(/^BookID:\d+;ISBN:([^;]+);.*$/, "$1");
+                // Stop scanner
+                qrReader.stop().then(() => {
+                    // Hide QR modal
+                    bootstrap.Modal.getInstance(qrScanModal).hide();
+                    // Fetch book details
+                    fetchBookDetails(isbn);
+                });
+            },
+            errorMessage => {
+                // Optionally handle scan errors
+            }
+        ).catch(err => {
+            document.getElementById('qr-reader').innerHTML = "<div class='text-danger'>Camera error: " + err + "</div>";
+        });
+    });
+
+    // Stop QR scanner when modal is hidden
+    qrScanModal.addEventListener('hidden.bs.modal', function () {
+        if (qrReader) {
+            qrReader.stop().catch(() => {});
+            document.getElementById('qr-reader').innerHTML = ""; // Clear scanner UI
+        }
+    });
+
+    function fetchBookDetails(isbn) {
+        fetch(`transaction.php?isbn=${encodeURIComponent(isbn)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.title) {
+                    document.getElementById('bookDetailsSection').style.display = '';
+                    document.getElementById('book_name').value = data.title;
+                    document.getElementById('book_author').value = data.author;
+                    document.getElementById('book_id').value = isbn;
+                } else {
+                    alert('Book not found!');
+                }
+                // Show borrow modal again
+                bootstrap.Modal.getOrCreateInstance(borrowBookModal).show();
+            });
+    }
+
+    // Hide book details section on modal open
+    borrowBookModal.addEventListener('show.bs.modal', function () {
+        document.getElementById('bookDetailsSection').style.display = 'none';
+        document.getElementById('book_name').value = '';
+        document.getElementById('book_author').value = '';
+        document.getElementById('book_id').value = '';
+    });
+});

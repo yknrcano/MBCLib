@@ -12,7 +12,7 @@
 
     $search = $_GET['search'] ?? '';
     $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-    $limit = 10;
+    $limit = 5;
     $offset = ($page - 1) * $limit;
 
     if ($search !== '') {
@@ -25,7 +25,7 @@
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
-    $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks,
+    $sql = "SELECT ISBN, Title, Author, Date_published, MIN(book_cover) AS book_cover, COUNT(*) AS stocks,
             SUM(CASE WHEN is_borrowed = 0 OR is_borrowed IS NULL THEN 1 ELSE 0 END) AS available_stocks
             FROM books
             " . ($search !== '' ? "WHERE ISBN LIKE ? OR Title LIKE ? OR Author LIKE ?" : "") . "
@@ -41,7 +41,7 @@
         $count_result = mysqli_query($con, $count_sql);
         $total_books = mysqli_fetch_row($count_result)[0];
 
-        $sql = "SELECT ISBN, Title, Author, Date_published, COUNT(*) AS stocks,
+        $sql = "SELECT ISBN, Title, Author, Date_published, MIN(book_cover) AS book_cover, COUNT(*) AS stocks,
             SUM(CASE WHEN is_borrowed = 0 OR is_borrowed IS NULL THEN 1 ELSE 0 END) AS available_stocks
             FROM books
             GROUP BY ISBN, Title, Author, Date_published
@@ -136,12 +136,13 @@
                     <div class="d-flex justify-content-end mb-3">
                         <form method="get" class="d-flex align-items-center" style="max-width:400px;">
                             <input type="text" name="search" class="form-control me-2" placeholder="Search by ISBN, Title, Author" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                            <button type="submit" class="btn btn-primary search-btn">Search</button>
+                            <button type="submit" class="btn btn-success search-btn">Search</button>
                         </form>
                     </div>
                     <table class="table table-striped align-middle">
                         <thead class="table-dark">
                             <tr>
+                                <th>Cover</th>
                                 <th>ISBN</th>
                                 <th>Title of the Book</th>
                                 <th>Author</th>
@@ -154,6 +155,13 @@
                         <tbody>
                             <?php foreach ($books as $book): ?>
                             <tr>
+                                <td>
+                                    <?php if (!empty($book['book_cover'])): ?>
+                                        <img src="../assets/book_cover/<?= htmlspecialchars($book['book_cover']) ?>" alt="Cover" style="width:50px; height:70px; object-fit:cover;">
+                                    <?php else: ?>
+                                        <span class="text-muted">No Cover</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= htmlspecialchars($book['ISBN']) ?></td>
                                 <td><?= htmlspecialchars($book['Title']) ?></td>
                                 <td><?= htmlspecialchars($book['Author']) ?></td>
@@ -178,6 +186,7 @@
                                             data-title="<?= htmlspecialchars($book['Title']) ?>"
                                             data-author="<?= htmlspecialchars($book['Author']) ?>"
                                             data-date="<?= htmlspecialchars($book['Date_published']) ?>"
+                                            data-cover="<?= htmlspecialchars($book['book_cover']) ?>"
                                         ><i class="fa-solid fa-pencil"></i></button>
                                         <button class="btn btn-square btn-danger"
                                             data-bs-toggle="modal"
@@ -247,17 +256,33 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="isbn" id="editBookIsbn">
-                            <div class="mb-3">
-                                <label class="form-label">Title:</label>
-                                <input type="text" class="form-control" name="title" id="editBookTitle" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Author:</label>
-                                <input type="text" class="form-control" name="author" id="editBookAuthor" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Date Published:</label>
-                                <input type="date" class="form-control" name="date_published" id="editBookDate" required>
+                            <div class="d-flex align-items-start gap-4">
+                                <!-- Book Cover Section -->
+                                <div class="position-relative" style="width:180px;">
+                                    <img id="editBookCoverPreview" src="" alt="Book Cover" class="img-thumbnail w-100" style="height:260px; object-fit:cover;">
+                                    <label for="editBookCover" class="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+                                        style="background:rgba(0,0,0,0.4); color:white; opacity:0; transition:opacity 0.2s; cursor:pointer;"
+                                        onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+                                        <i class="fa fa-edit fa-2x mb-2"></i>
+                                        <span>Edit Cover</span>
+                                        <input type="file" class="form-control" id="editBookCover" name="book_cover" accept="image/*" style="display:none;">
+                                    </label>
+                                </div>
+                                <!-- Form Fields Section -->
+                                <div class="flex-grow-1">
+                                    <div class="mb-3">
+                                        <label class="form-label">Title:</label>
+                                        <input type="text" class="form-control" name="title" id="editBookTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Author:</label>
+                                        <input type="text" class="form-control" name="author" id="editBookAuthor" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Date Published:</label>
+                                        <input type="date" class="form-control" name="date_published" id="editBookDate" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -353,6 +378,13 @@
                             <div class="mb-3">
                                 <label for="addDatePublished" class="form-label">Date Published</label>
                                 <input type="date" class="form-control" id="addDatePublished" name="Date_published" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="addBookCover" class="form-label">Book Cover</label>
+                                <input type="file" class="form-control" id="addBookCover" name="book_cover" accept="image/*">
+                                <img id="coverPreview" src="" alt="Cover Preview" style="display:none; margin-top:10px; width:80px; height:110px; object-fit:cover;">
+                                <input type="hidden" id="coverUrl" name="cover_url">
                             </div>
                             <div class="mb-3">
                                 <label for="addQuantity" class="form-label">Quantity</label>
