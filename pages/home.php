@@ -143,7 +143,9 @@
                             <input type="text" name="lastname" class="form-control" placeholder="Last Name" required>
                         </div>
                         <div class="mb-3 position-relative">
-                            <input type="text" name="phone" class="form-control" placeholder="Contact Number" required>
+                            <input type="tel" name="phone" class="form-control" placeholder="Contact Number" required
+                                maxlength="11" pattern="[0-9]{11}" inputmode="numeric"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,11);">
                         </div>
                         <div class="mb-3 position-relative">
                             <input type="email" name="email" class="form-control" placeholder="Email address" required>
