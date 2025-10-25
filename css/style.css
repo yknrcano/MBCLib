@@ -1446,13 +1446,18 @@ footer {
     min-width: 60px;
 }
 
+.book-list .btn-success {
+    background: var(--primary-color, #16437E);
+    border: none;
+}
+
 .book-list .btn-danger {
     background: #df2121;
     border: none;
 }
 
 .book-list .btn-primary {
-    background: var(--primary-color, #16437E);
+    background: rgb(237, 189, 31);
     border: none;
 }
 
@@ -1602,4 +1607,18 @@ input[type=number] {
 }
 input[type=number]::-ms-input-spinner {
     display: none;
+}
+
+.transaction-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(22, 67, 126, 0.08);
+    padding: 30px 40px;
+}
+
+#editBookCoverPreview + label {
+    opacity: 0;
+}
+.position-relative:hover label {
+    opacity: 1 !important;
 }
