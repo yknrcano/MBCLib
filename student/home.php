@@ -18,6 +18,21 @@
         $user_name = 'Guest';
     }
     error_log('[home.php] SESSION=' . print_r($_SESSION, true) . ' user_name=' . $user_name);
+
+    require_once __DIR__ . '/../functions/dbcon.php'; // 
+
+    $gallery_books = [];
+    $sql = "SELECT ISBN, Title, Author, Date_published, MIN(book_cover) AS book_cover
+            FROM books
+            GROUP BY ISBN, Title, Author, Date_published";
+    $result = mysqli_query($con, $sql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $gallery_books[] = $row;
+        }
+    } else {
+        error_log("Error fetching gallery books: " . mysqli_error($con));
+    }
 ?>
 
 
@@ -131,75 +146,55 @@
 
     </div>
 
-    <div class="school-details">
-        <span>What's New?</span>
-        <svg class="school-details-icon" width="25" height="25" viewBox="0 0 25 25" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.60846 6.59467C6.31556 6.30178 5.84069 6.30178 5.54779 6.59467C5.2549 6.88756 5.2549 7.36244 5.54779 7.65533L11.7978 13.9053C12.0907 14.1982 12.5656 14.1982 12.8585 13.9053L19.1085 7.65533C19.4013 7.36244 19.4013 6.88756 19.1085 6.59467C18.8156 6.30178 18.3407 6.30178 18.0478 6.59467L12.3281 12.3143L6.60846 6.59467Z" fill="#323544"/>
-        </svg>
-        <div class="school-details-content">
-            <div class="school-details-content-txt">
-                <h2>Marie-Bernarde College</h2>
-                <p>Established on September 20, 2002, Marie-Bernarde College Inc. (MBC) was founded by a visionary group of nursing educators, esteemed medical practitioners, and experts in business and education. From its inception, MBC has been dedicated to providing an exceptional, globally competitive healthcare education. The college's early years were marked by a dynamic start and a commitment to growth, beginning with the introduction of a comprehensive 6-month Caregiver Course. This course, expertly designed and programmed by trusted professionals, set the foundation for MBC's reputation for excellence in healthcare education.
-                </p>
-            </div>
-        </div>  
-    </div>
-
-    <div class="programs">
-        <h2>Program Offerings</h2>
-        <p>Marie-Bernarde College Inc. proudly offers a wide range of accredited programs in healthcare, business, education, and technology, designed to equip students with the skills and knowledge needed for global competitiveness.</p>
-
-        <div class="program-list" mask>
-            <div class="program-box">
-                <div class="let-program">
-                    <h2>LET Program</h2>
-                    <i class="fa-solid fa-award"></i>
-                    <p>Our Licensure Examination for Teachers (LET) program is designed to prepare aspiring educators for the challenges of the teaching profession.</p>
+    <div class="container my-5">
+        <h2 class="mb-4">Book Gallery</h2>
+        <div class="row g-4">
+            <?php foreach ($gallery_books as $book): ?>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="card h-100 shadow-sm book-gallery-card" style="cursor:pointer;" 
+                        data-bs-toggle="modal"
+                        data-bs-target="#bookGalleryModal"
+                        data-title="<?= htmlspecialchars($book['Title']) ?>"
+                        data-author="<?= htmlspecialchars($book['Author']) ?>"
+                        data-isbn="<?= htmlspecialchars($book['ISBN']) ?>"
+                        data-date="<?= htmlspecialchars($book['Date_published']) ?>"
+                        data-cover="<?= htmlspecialchars($book['book_cover']) ?>"
+                    >
+                        <?php if (!empty($book['book_cover'])): ?>
+                            <img src="../assets/book_cover/<?= htmlspecialchars($book['book_cover']) ?>" class="card-img-top" alt="Cover" style="height:180px; object-fit:cover;">
+                        <?php else: ?>
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:180px;">
+                                <span class="text-muted">No Cover</span>
+                            </div>
+                        <?php endif; ?>
+                        <div class="card-body p-2">
+                            <h6 class="card-title text-truncate mb-0"><?= htmlspecialchars($book['Title']) ?></h6>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="program-box">
-                <div class="midwifery">
-                    <h2>Midwifery</h2>
-                    <i class="fa-solid fa-person-pregnant"></i>
-                    <p>Our midwifery program trains students to provide comprehensive care to childbearing women and their families.</p>
-                </div>
-            </div>
-
-            <div class="program-box">
-                <div class="secondary-educ">
-                    <h2>Secondary Education</h2>
-                    <i class="fa-solid fa-book"></i>
-                    <p>Our secondary education program prepares students to become effective educators in middle and high school settings.</p>
-                </div>
-            </div>
-
-            <div class="program-box">
-                <div class="business-ad">
-                    <h2>Business Administration</h2>
-                    <i class="fa-solid fa-building"></i>
-                    <p>Our business administration program provides students with a strong foundation in business principles and practices.</p>
-                </div>
-            </div>
-
-            <div class="program-box">
-                <div class="nursing">
-                    <h2>Nursing</h2>
-                    <i class="fa-solid fa-stethoscope"></i>
-                    <p>Our nursing program is designed to equip students with the necessary skills and knowledge to excel in the healthcare field.</p>
-                </div>  
-            </div>
-
-            <div class="program-box">
-                <div class="enroll-now">
-                    <h2>Enroll Now</h2>
-                    <i class="fa-solid fa-person"></i>
-                    <p>Join us today and take the first step towards a rewarding career!</p>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
     </div>
+    
+    <!-- Book Gallery Modal -->
+    <div class="modal fade" id="bookGalleryModal" tabindex="-1" aria-labelledby="bookGalleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookGalleryModalLabel">Book Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="galleryModalCover" src="" alt="Book Cover" class="img-fluid mb-3" style="max-height:250px;">
+                    <h5 id="galleryModalTitle"></h5>
+                    <p><strong>Author:</strong> <span id="galleryModalAuthor"></span></p>
+                    <p><strong>ISBN:</strong> <span id="galleryModalIsbn"></span></p>
+                    <p><strong>Date Published:</strong> <span id="galleryModalDate"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <div class="footer-top">
@@ -238,6 +233,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/374eee3e25.js" crossorigin="anonymous"></script>
     <script src="../js/navbar-scroll.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var bookGalleryModal = document.getElementById('bookGalleryModal');
+        bookGalleryModal.addEventListener('show.bs.modal', function (event) {
+            var card = event.relatedTarget;
+            document.getElementById('galleryModalTitle').textContent = card.getAttribute('data-title');
+            document.getElementById('galleryModalAuthor').textContent = card.getAttribute('data-author');
+            document.getElementById('galleryModalIsbn').textContent = card.getAttribute('data-isbn');
+            document.getElementById('galleryModalDate').textContent = card.getAttribute('data-date');
+            var cover = card.getAttribute('data-cover');
+            var img = document.getElementById('galleryModalCover');
+            if (cover) {
+                img.src = '../assets/book_cover/' + cover;
+                img.style.display = '';
+            } else {
+                img.src = '';
+                img.style.display = 'none';
+            }
+        });
+    });
+    </script>
 
 
     <?php if ($modal_show): ?>

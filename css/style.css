@@ -1642,3 +1642,11 @@ input[type=number]::-ms-input-spinner {
     padding: 20px;
     margin: 20px 0 0 0;
 }
+
+.book-gallery-card {
+    transition: transform 0.15s;
+}
+.book-gallery-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(22,67,126,0.12);
+}
