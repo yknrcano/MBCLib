@@ -161,9 +161,9 @@
                         data-cover="<?= htmlspecialchars($book['book_cover']) ?>"
                     >
                         <?php if (!empty($book['book_cover'])): ?>
-                            <img src="../assets/book_cover/<?= htmlspecialchars($book['book_cover']) ?>" class="card-img-top" alt="Cover" style="height:180px; object-fit:cover;">
+                            <img src="../assets/book_cover/<?= htmlspecialchars($book['book_cover']) ?>" class="card-img-top" alt="Cover" style="height:290px; object-fit:cover;">
                         <?php else: ?>
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:180px;">
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:290px;">
                                 <span class="text-muted">No Cover</span>
                             </div>
                         <?php endif; ?>
