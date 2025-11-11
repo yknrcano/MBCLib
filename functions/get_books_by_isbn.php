@@ -11,7 +11,8 @@ $query = "
     SELECT 
         b.book_id, 
         b.is_borrowed, 
-        COALESCE(u.firstname, 'None') AS borrower_name
+        COALESCE(u.firstname, 'None') AS borrower_name,
+        b.qr_code
     FROM books b
     LEFT JOIN transactions t ON b.book_id = t.book_id AND t.status = 'borrowed'
     LEFT JOIN users u ON t.id_no = u.id_no

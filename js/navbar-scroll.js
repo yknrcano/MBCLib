@@ -151,21 +151,19 @@ document.addEventListener("DOMContentLoaded", function() {
                                         ${book.is_borrowed == 1 ? 'No' : 'Yes'}
                                     </span>
                                 </td>
-                                <td>${book.borrower_name}</td>
+                                <td>${book.borrower_name ? book.borrower_name : 'None'}</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary"
                                         data-bs-toggle="modal"
                                         data-bs-target="#qrCodeModal"
                                         data-book-id="${book.book_id}"
-                                        data-qr-code="${book.qr_code ? book.qr_code : ''}">
-                                        <i class="fa-solid fa-qrcode"></i>
-                                    </button>
+                                        data-qr-code="${book.qr_code ? book.qr_code : ''}"
+                                    ><i class="fa-solid fa-qrcode"></i></button>
                                     <button class="btn btn-sm btn-danger"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteSingleBookModal"
-                                        data-book-id="${book.book_id}">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                        data-book-id="${book.book_id}"
+                                    ><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
                         `;
