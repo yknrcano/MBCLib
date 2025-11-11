@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2025 at 09:07 AM
+-- Generation Time: Nov 11, 2025 at 01:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`book_id`, `ISBN`, `Title`, `Author`, `Date_published`, `qr_code`, `is_borrowed`, `Reader_id`, `date_borrowed`, `book_cover`) VALUES
 (58, '9780131103627', 'The C Programming Language', 'Brian W. Kernighan', '1988-01-01', 'book_58.png', 0, NULL, NULL, 'cover_68f863a1c1b498.70916238.jpg'),
-(59, '9780131103627', 'The C Programming Language', 'Brian W. Kernighan', '1988-01-01', 'book_59.png', 0, NULL, NULL, 'cover_68f863a1c1b498.70916238.jpg'),
+(59, '9780131103627', 'The C Programming Language', 'Brian W. Kernighan', '1988-01-01', 'book_59.png', 1, NULL, '2025-11-11 20:40:09', 'cover_68f863a1c1b498.70916238.jpg'),
 (60, '9780131103627', 'The C Programming Language', 'Brian W. Kernighan', '1988-01-01', 'book_60.png', 0, NULL, NULL, 'cover_68f863a1c1b498.70916238.jpg'),
 (61, '9780134685991', 'Effective Java', 'Joshua Bloch', '2017-12-26', 'book_61.png', 0, NULL, NULL, 'cover_68f863b1e03363.48373771.jpg'),
 (62, '9780134685991', 'Effective Java', 'Joshua Bloch', '2017-12-26', 'book_62.png', 0, NULL, NULL, 'cover_68f863b1e03363.48373771.jpg'),
@@ -67,6 +67,30 @@ INSERT INTO `books` (`book_id`, `ISBN`, `Title`, `Author`, `Date_published`, `qr
 (77, '9781491950296', 'Programming JavaScript Applications: Robust Web Architecture with Node, HTML5, and Modern JS Libraries', 'Eric Elliott', '2014-07-19', 'book_77.png', 0, NULL, NULL, 'cover_68f8643b8c5262.79304670.jpg'),
 (82, '9781492091509', 'Practical Python Data Wrangling and Data Quality', 'Susan E. McGregor', '2022-01-01', 'book_82.png', 0, NULL, NULL, 'cover_68f864b6ebe4c1.90147180.jpg'),
 (83, '9781492091509', 'Practical Python Data Wrangling and Data Quality', 'Susan E. McGregor', '2022-01-01', 'book_83.png', 0, NULL, NULL, 'cover_68f864cceae285.82508189.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `transaction_id` int(11) NOT NULL,
+  `id_no` varchar(50) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `date_borrowed` datetime NOT NULL,
+  `date_return_expected` date NOT NULL,
+  `date_returned` datetime DEFAULT NULL,
+  `status` enum('borrowed','returned') DEFAULT 'borrowed',
+  `overdue_days` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`transaction_id`, `id_no`, `book_id`, `date_borrowed`, `date_return_expected`, `date_returned`, `status`, `overdue_days`) VALUES
+(1, '424002719AB', 59, '2025-11-11 12:39:00', '2025-11-13', NULL, 'borrowed', 0);
 
 -- --------------------------------------------------------
 
@@ -108,10 +132,19 @@ ALTER TABLE `books`
   ADD PRIMARY KEY (`book_id`);
 
 --
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `book_id` (`book_id`),
+  ADD KEY `id_no` (`id_no`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `id_no` (`id_no`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -124,10 +157,27 @@ ALTER TABLE `books`
   MODIFY `book_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
+  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`id_no`) REFERENCES `users` (`id_no`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

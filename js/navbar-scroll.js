@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         ${book.is_borrowed == 1 ? 'No' : 'Yes'}
                                     </span>
                                 </td>
-                                <td>${book.reader_name ? book.reader_name : 'None'}</td>
+                                <td>${book.borrower_name}</td>
                                 <td>
                                     <button class="btn btn-sm btn-secondary"
                                         data-bs-toggle="modal"
@@ -351,71 +351,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    let qrReader;
-    let qrScanModal = document.getElementById('qrScanModal');
-    let borrowBookModal = document.getElementById('borrowBookModal');
-
-    // Show QR scanner when QR modal is shown
-    qrScanModal.addEventListener('shown.bs.modal', function () {
-        if (!qrReader) {
-            qrReader = new Html5Qrcode("qr-reader");
-        }
-        qrReader.start(
-            { facingMode: "environment" },
-            {
-                fps: 10,
-                qrbox: 250
-            },
-            qrCodeMessage => {
-                // Extract ISBN from QR code (adjust regex if needed)
-                let isbn = qrCodeMessage.replace(/^BookID:\d+;ISBN:([^;]+);.*$/, "$1");
-                // Stop scanner
-                qrReader.stop().then(() => {
-                    // Hide QR modal
-                    bootstrap.Modal.getInstance(qrScanModal).hide();
-                    // Fetch book details
-                    fetchBookDetails(isbn);
-                });
-            },
-            errorMessage => {
-                // Optionally handle scan errors
-            }
-        ).catch(err => {
-            document.getElementById('qr-reader').innerHTML = "<div class='text-danger'>Camera error: " + err + "</div>";
-        });
-    });
-
-    // Stop QR scanner when modal is hidden
-    qrScanModal.addEventListener('hidden.bs.modal', function () {
-        if (qrReader) {
-            qrReader.stop().catch(() => {});
-            document.getElementById('qr-reader').innerHTML = ""; // Clear scanner UI
-        }
-    });
-
-    function fetchBookDetails(isbn) {
-        fetch(`transaction.php?isbn=${encodeURIComponent(isbn)}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.title) {
-                    document.getElementById('bookDetailsSection').style.display = '';
-                    document.getElementById('book_name').value = data.title;
-                    document.getElementById('book_author').value = data.author;
-                    document.getElementById('book_id').value = isbn;
-                } else {
-                    alert('Book not found!');
-                }
-                // Show borrow modal again
-                bootstrap.Modal.getOrCreateInstance(borrowBookModal).show();
-            });
-    }
-
-    // Hide book details section on modal open
-    borrowBookModal.addEventListener('show.bs.modal', function () {
-        document.getElementById('bookDetailsSection').style.display = 'none';
-        document.getElementById('book_name').value = '';
-        document.getElementById('book_author').value = '';
-        document.getElementById('book_id').value = '';
-    });
-});

@@ -1622,3 +1622,23 @@ input[type=number]::-ms-input-spinner {
 .position-relative:hover label {
     opacity: 1 !important;
 }
+
+.grid-parent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 0px;
+}
+
+.div1 { grid-area: 1 / 1 / 2 / 3; }
+.div2 { grid-area: 2 / 1 / 3 / 2; }
+.div3 { grid-area: 2 / 2 / 3 / 3; }
+
+.div2, .div3 {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(22, 67, 126, 0.08);
+    padding: 20px;
+    margin: 20px 0 0 0;
+}
